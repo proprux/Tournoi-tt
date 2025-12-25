@@ -1,0 +1,597 @@
+import React, { useState, useEffect } from ‘react’;
+import { Download, Save, Upload, Menu, X, Trophy, Users, Grid, List } from ‘lucide-react’;
+
+const TournoiTennisPWA = () => {
+const [currentView, setCurrentView] = useState(‘menu’);
+const [tournamentName, setTournamentName] = useState(’’);
+const [participants, setParticipants] = useState([’’]);
+const [poules, setPoules] = useState([]);
+const [resultatsPoules, setResultatsPoules] = useState({});
+const [nombrePoules, setNombrePoules] = useState(‘auto’);
+const [nombreQualifies, setNombreQualifies] = useState(2);
+const [qualifiesPoules, setQualifiesPoules] = useState([]);
+const [champion, setChampion] = useState(null);
+const [second, setSecond] = useState(null);
+const [third, setThird] = useState(null);
+const [fourth, setFourth] = useState(null);
+const [savedTournaments, setSavedTournaments] = useState([]);
+const [deferredPrompt, setDeferredPrompt] = useState(null);
+const [showInstall, setShowInstall] = useState(false);
+
+useEffect(() => {
+loadSavedTournaments();
+
+```
+const handleBeforeInstall = (e) => {
+  e.preventDefault();
+  setDeferredPrompt(e);
+  setShowInstall(true);
+};
+
+window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
+
+return () => window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+```
+
+}, []);
+
+const loadSavedTournaments = () => {
+try {
+const saved = JSON.parse(localStorage.getItem(‘tournaments’) || ‘[]’);
+setSavedTournaments(saved);
+} catch (e) {
+setSavedTournaments([]);
+}
+};
+
+const saveTournament = () => {
+const name = prompt(‘Nom du tournoi:’, tournamentName || `Tournoi ${new Date().toLocaleDateString()}`);
+if (!name) return;
+
+```
+setTournamentName(name);
+
+const tournamentData = {
+  name,
+  date: new Date().toISOString(),
+  participants,
+  poules,
+  resultatsPoules,
+  nombrePoules,
+  nombreQualifies,
+  qualifiesPoules,
+  champion,
+  second,
+  third,
+  fourth
+};
+
+const saves = JSON.parse(localStorage.getItem('tournaments') || '[]');
+const existingIndex = saves.findIndex(s => s.name === name);
+
+if (existingIndex > -1) {
+  if (confirm('Un tournoi avec ce nom existe déjà. Remplacer?')) {
+    saves[existingIndex] = tournamentData;
+  } else return;
+} else {
+  saves.push(tournamentData);
+}
+
+localStorage.setItem('tournaments', JSON.stringify(saves));
+loadSavedTournaments();
+alert('✅ Tournoi sauvegardé avec succès!');
+```
+
+};
+
+const loadTournament = (tournament) => {
+setTournamentName(tournament.name);
+setParticipants(tournament.participants);
+setPoules(tournament.poules || []);
+setResultatsPoules(tournament.resultatsPoules || {});
+setNombrePoules(tournament.nombrePoules || ‘auto’);
+setNombreQualifies(tournament.nombreQualifies || 2);
+setQualifiesPoules(tournament.qualifiesPoules || []);
+setChampion(tournament.champion);
+setSecond(tournament.second);
+setThird(tournament.third);
+setFourth(tournament.fourth);
+
+```
+if (tournament.champion) {
+  setCurrentView('podium');
+} else if (tournament.poules && tournament.poules.length > 0) {
+  setCurrentView('poules');
+} else {
+  setCurrentView('saisie');
+}
+```
+
+};
+
+const deleteTournament = (name) => {
+if (!confirm(`Supprimer le tournoi "${name}"?`)) return;
+
+```
+const saves = JSON.parse(localStorage.getItem('tournaments') || '[]');
+const filtered = saves.filter(s => s.name !== name);
+localStorage.setItem('tournaments', JSON.stringify(filtered));
+loadSavedTournaments();
+```
+
+};
+
+const newTournament = () => {
+setTournamentName(’’);
+setParticipants([’’]);
+setPoules([]);
+setResultatsPoules({});
+setNombrePoules(‘auto’);
+setNombreQualifies(2);
+setQualifiesPoules([]);
+setChampion(null);
+setSecond(null);
+setThird(null);
+setFourth(null);
+setCurrentView(‘saisie’);
+};
+
+const installPWA = async () => {
+if (!deferredPrompt) return;
+
+```
+deferredPrompt.prompt();
+const { outcome } = await deferredPrompt.userChoice;
+
+if (outcome === 'accepted') {
+  setShowInstall(false);
+}
+
+setDeferredPrompt(null);
+```
+
+};
+
+const exportTournament = () => {
+let content = `TOURNOI DE TENNIS DE TABLE\n`;
+if (tournamentName) content += `Nom: ${tournamentName}\n`;
+content += `Date: ${new Date().toLocaleDateString()}\n\n`;
+
+```
+content += `=== PARTICIPANTS ===\n`;
+participants.filter(p => p.trim()).forEach((p, i) => {
+  content += `${i + 1}. ${p}\n`;
+});
+
+if (champion) {
+  content += `\n=== PODIUM ===\n`;
+  content += `🥇 CHAMPION: ${champion}\n`;
+  content += `🥈 2ème: ${second}\n`;
+  content += `🥉 3ème: ${third}\n`;
+  content += `4ème: ${fourth}\n`;
+}
+
+const blob = new Blob([content], { type: 'text/plain' });
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = `${tournamentName || 'tournoi'}.txt`;
+a.click();
+```
+
+};
+
+const melangerArray = (array) => {
+const arr = […array];
+for (let i = arr.length - 1; i > 0; i–) {
+const j = Math.floor(Math.random() * (i + 1));
+[arr[i], arr[j]] = [arr[j], arr[i]];
+}
+return arr;
+};
+
+const verifierDoublons = () => {
+const valides = participants.filter(p => p.trim());
+const doublons = new Set();
+const vus = new Set();
+
+```
+valides.forEach(p => {
+  const nom = p.trim().toLowerCase();
+  if (vus.has(nom)) doublons.add(nom);
+  else vus.add(nom);
+});
+
+return doublons;
+```
+
+};
+
+const creerPoules = () => {
+const valides = participants.filter(p => p.trim());
+
+```
+if (valides.length < 2) {
+  alert('Il faut au moins 2 participants');
+  return;
+}
+
+if (verifierDoublons().size > 0) {
+  alert('Il y a des noms en double. Veuillez les corriger.');
+  return;
+}
+
+const aleatoires = melangerArray(valides);
+const nouvellesPoules = [];
+
+if (nombrePoules === 'auto') {
+  let taille = 4;
+  if (valides.length <= 8) taille = valides.length;
+  else if (valides.length <= 12) taille = 4;
+  else if (valides.length <= 20) taille = 5;
+  else taille = 6;
+  
+  for (let i = 0; i < aleatoires.length; i += taille) {
+    nouvellesPoules.push(aleatoires.slice(i, i + taille));
+  }
+} else {
+  const nb = parseInt(nombrePoules);
+  for (let i = 0; i < nb; i++) nouvellesPoules.push([]);
+  
+  const parPoule = Math.floor(aleatoires.length / nb);
+  const reste = aleatoires.length % nb;
+  let idx = 0;
+  
+  for (let i = 0; i < nb; i++) {
+    const t = parPoule + (i < reste ? 1 : 0);
+    for (let j = 0; j < t; j++) {
+      if (idx < aleatoires.length) {
+        nouvellesPoules[i].push(aleatoires[idx++]);
+      }
+    }
+  }
+}
+
+const resultats = {};
+nouvellesPoules.forEach((poule, idx) => {
+  resultats[idx] = {};
+  poule.forEach(j => {
+    resultats[idx][j] = { victoires: 0, defaites: 0, matchs: {} };
+  });
+  for (let i = 0; i < poule.length; i++) {
+    for (let j = i + 1; j < poule.length; j++) {
+      resultats[idx][poule[i]].matchs[poule[j]] = null;
+      resultats[idx][poule[j]].matchs[poule[i]] = null;
+    }
+  }
+});
+
+setPoules(nouvellesPoules);
+setResultatsPoules(resultats);
+setCurrentView('poules');
+```
+
+};
+
+const simulerTournoi = () => {
+const mockData = {
+champion: participants[0] || ‘Joueur 1’,
+second: participants[1] || ‘Joueur 2’,
+third: participants[2] || ‘Joueur 3’,
+fourth: participants[3] || ‘Joueur 4’
+};
+
+```
+setChampion(mockData.champion);
+setSecond(mockData.second);
+setThird(mockData.third);
+setFourth(mockData.fourth);
+setCurrentView('podium');
+```
+
+};
+
+// Vues
+const MenuView = () => (
+<div className="space-y-4">
+{showInstall && (
+<div className="bg-blue-600 text-white p-4 rounded-lg flex justify-between items-center">
+<div>
+<strong>📱 Installer l’application</strong>
+<div className="text-sm mt-1">Accédez rapidement depuis votre écran d’accueil</div>
+</div>
+<button onClick={installPWA} className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold">
+Installer
+</button>
+</div>
+)}
+
+```
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <button onClick={newTournament} className="bg-green-500 text-white p-6 rounded-lg hover:bg-green-600 flex flex-col items-center gap-2">
+      <Trophy size={48} />
+      <span className="text-xl font-bold">Nouveau Tournoi</span>
+    </button>
+    
+    <button onClick={() => setCurrentView('saves')} className="bg-blue-500 text-white p-6 rounded-lg hover:bg-blue-600 flex flex-col items-center gap-2">
+      <Upload size={48} />
+      <span className="text-xl font-bold">Tournois Sauvegardés</span>
+    </button>
+  </div>
+</div>
+```
+
+);
+
+const SavesView = () => (
+<div>
+<div className="flex gap-2 mb-4">
+<button onClick={() => setCurrentView(‘menu’)} className=“bg-gray-500 text-white px-4 py-2 rounded-lg”>
+← Menu
+</button>
+</div>
+
+```
+  <h2 className="text-2xl font-bold mb-4">💾 Tournois Sauvegardés</h2>
+  
+  {savedTournaments.length === 0 ? (
+    <p className="text-center text-gray-500 py-12">Aucun tournoi sauvegardé</p>
+  ) : (
+    <div className="space-y-3">
+      {savedTournaments.map((t, i) => (
+        <div key={i} className="bg-white border-2 border-gray-200 p-4 rounded-lg flex justify-between items-center">
+          <div>
+            <strong className="text-lg">{t.name}</strong>
+            <div className="text-sm text-gray-600">{new Date(t.date).toLocaleString()}</div>
+          </div>
+          <div className="flex gap-2">
+            <button onClick={() => loadTournament(t)} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+              Charger
+            </button>
+            <button onClick={() => deleteTournament(t.name)} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+              Supprimer
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+```
+
+);
+
+const SaisieView = () => {
+const doublons = verifierDoublons();
+
+```
+return (
+  <div>
+    <div className="flex gap-2 mb-4">
+      <button onClick={() => setCurrentView('menu')} className="bg-gray-500 text-white px-4 py-2 rounded-lg">
+        ← Menu
+      </button>
+      <button onClick={saveTournament} className="bg-orange-500 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+        <Save size={20} />
+        Sauvegarder
+      </button>
+    </div>
+    
+    <h2 className="text-2xl font-bold mb-4">Participants ({participants.filter(p => p.trim()).length}/50)</h2>
+    
+    <div className="space-y-2 mb-4">
+      {participants.map((p, i) => {
+        const estDoublon = p.trim() && doublons.has(p.trim().toLowerCase());
+        return (
+          <div key={i}>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={p}
+                onChange={(e) => {
+                  const nouveaux = [...participants];
+                  nouveaux[i] = e.target.value;
+                  setParticipants(nouveaux);
+                }}
+                className={`flex-1 p-3 border-2 rounded-lg ${estDoublon ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
+                placeholder={`Participant ${i + 1}`}
+              />
+              {participants.length > 1 && (
+                <button
+                  onClick={() => {
+                    const nouveaux = participants.filter((_, idx) => idx !== i);
+                    setParticipants(nouveaux.length ? nouveaux : ['']);
+                  }}
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+            {estDoublon && <p className="text-red-500 text-sm mt-1">⚠️ Ce nom existe déjà</p>}
+          </div>
+        );
+      })}
+    </div>
+    
+    <div className="bg-gray-100 p-4 rounded-lg mb-4">
+      <label className="font-bold">Nombre de poules</label>
+      <select
+        value={nombrePoules}
+        onChange={(e) => setNombrePoules(e.target.value)}
+        className="w-full p-3 border-2 border-gray-300 rounded-lg mt-2"
+      >
+        <option value="auto">Automatique</option>
+        {[...Array(Math.min(participants.filter(p => p.trim()).length, 20))].map((_, i) => (
+          <option key={i} value={i + 1}>{i + 1} poule{i > 0 ? 's' : ''}</option>
+        ))}
+      </select>
+    </div>
+    
+    <div className="bg-gray-100 p-4 rounded-lg mb-4">
+      <label className="font-bold">Qualifiés par poule</label>
+      <select
+        value={nombreQualifies}
+        onChange={(e) => setNombreQualifies(parseInt(e.target.value))}
+        className="w-full p-3 border-2 border-gray-300 rounded-lg mt-2"
+      >
+        <option value="1">1 qualifié</option>
+        <option value="2">2 qualifiés</option>
+        <option value="3">3 qualifiés</option>
+        <option value="4">4 qualifiés</option>
+      </select>
+    </div>
+    
+    <div className="flex gap-2">
+      <button
+        onClick={() => {
+          if (participants.length < 50) {
+            setParticipants([...participants, '']);
+          }
+        }}
+        className="bg-blue-500 text-white px-6 py-3 rounded-lg flex-1"
+      >
+        Ajouter
+      </button>
+      <button onClick={creerPoules} className="bg-green-500 text-white px-6 py-3 rounded-lg flex-1">
+        Créer poules
+      </button>
+    </div>
+    
+    {participants.filter(p => p.trim()).length >= 4 && (
+      <button onClick={simulerTournoi} className="w-full mt-2 bg-purple-500 text-white px-6 py-3 rounded-lg">
+        🎲 Simuler tournoi (test)
+      </button>
+    )}
+  </div>
+);
+```
+
+};
+
+const PoulesView = () => (
+<div>
+<div className="flex gap-2 mb-4 flex-wrap">
+<button onClick={() => setCurrentView(‘saisie’)} className=“bg-gray-500 text-white px-4 py-2 rounded-lg”>
+← Participants
+</button>
+<button onClick={saveTournament} className="bg-orange-500 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+<Save size={20} />
+Sauvegarder
+</button>
+<button onClick={simulerTournoi} className="bg-purple-500 text-white px-4 py-2 rounded-lg">
+🎲 Simuler fin
+</button>
+</div>
+
+```
+  <h2 className="text-2xl font-bold mb-4">Poules ({nombreQualifies} qualifiés/poule)</h2>
+  
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {poules.map((poule, i) => (
+      <div key={i} className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
+        <h3 className="font-bold text-lg mb-3 text-blue-700 border-b-2 border-blue-300 pb-2">
+          Poule {i + 1} ({poule.length} joueurs)
+        </h3>
+        <ol className="list-decimal list-inside">
+          {poule.map((j, idx) => (
+            <li key={idx} className={idx < nombreQualifies ? 'bg-green-100 font-semibold p-1 rounded' : 'p-1'}>
+              {j}
+            </li>
+          ))}
+        </ol>
+      </div>
+    ))}
+  </div>
+</div>
+```
+
+);
+
+const PodiumView = () => (
+<div>
+<div className="flex gap-2 mb-4">
+<button onClick={() => setCurrentView(‘menu’)} className=“bg-gray-500 text-white px-4 py-2 rounded-lg”>
+← Menu
+</button>
+<button onClick={saveTournament} className="bg-orange-500 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+<Save size={20} />
+Sauvegarder
+</button>
+<button onClick={exportTournament} className="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+<Download size={20} />
+Exporter
+</button>
+</div>
+
+```
+  <div className="text-center py-12">
+    <h1 className="text-5xl font-bold text-orange-600 mb-12">🏆 PODIUM 🏆</h1>
+    
+    <div className="flex justify-center items-end gap-8 mb-12 flex-wrap">
+      <div className="text-center">
+        <div className="bg-gradient-to-br from-gray-300 to-gray-400 w-36 h-28 rounded-xl flex items-center justify-center text-6xl mb-4 shadow-lg">
+          🥈
+        </div>
+        <div className="bg-gray-300 p-4 rounded-xl min-w-36 shadow-md">
+          <div className="text-3xl font-bold mb-2">2ème</div>
+          <div className="text-xl font-semibold">{second}</div>
+        </div>
+      </div>
+      
+      <div className="text-center">
+        <div className="bg-gradient-to-br from-yellow-300 to-yellow-500 w-44 h-40 rounded-xl flex items-center justify-center text-8xl mb-4 shadow-2xl animate-pulse">
+          🏆
+        </div>
+        <div className="bg-gradient-to-br from-yellow-300 to-yellow-500 p-6 rounded-xl min-w-44 shadow-xl">
+          <div className="text-4xl font-bold mb-2">CHAMPION</div>
+          <div className="text-2xl font-bold text-orange-700">{champion}</div>
+        </div>
+      </div>
+      
+      <div className="text-center">
+        <div className="bg-gradient-to-br from-orange-300 to-orange-500 w-36 h-24 rounded-xl flex items-center justify-center text-6xl mb-4 shadow-lg">
+          🥉
+        </div>
+        <div className="bg-orange-400 p-4 rounded-xl min-w-36 shadow-md">
+          <div className="text-3xl font-bold mb-2">3ème</div>
+          <div className="text-xl font-semibold">{third}</div>
+        </div>
+      </div>
+    </div>
+    
+    <div className="bg-gray-100 p-6 rounded-xl max-w-md mx-auto">
+      <div className="text-2xl font-bold mb-3">4ème place</div>
+      <div className="text-xl text-gray-700">{fourth}</div>
+    </div>
+  </div>
+</div>
+```
+
+);
+
+return (
+<div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+<div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl p-8">
+<h1 className="text-4xl font-bold text-center text-indigo-700 mb-8">
+🏓 Gestion de Tournoi - Tennis de Table
+</h1>
+
+```
+    {currentView === 'menu' && <MenuView />}
+    {currentView === 'saves' && <SavesView />}
+    {currentView === 'saisie' && <SaisieView />}
+    {currentView === 'poules' && <PoulesView />}
+    {currentView === 'podium' && <PodiumView />}
+  </div>
+</div>
+```
+
+);
+};
+
+export default TournoiTennisPWA;
