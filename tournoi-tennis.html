@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0d47a1">
+<title>🏓 Tournoi Tennis de Table</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--p:#0d47a1;--pl:#1976d2;--a:#ff6d00;--s:#2e7d32;--w:#f9a825;--d:#c62828;--bg:#f0f4f8;--c:#fff;--t:#1a1a2e;--tl:#64748b;--b:#e2e8f0;--sh:0 4px 24px rgba(13,71,161,.12);--r:16px;--rs:10px}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:Outfit,-apple-system,sans-serif;background:var(--bg);min-height:100vh;color:var(--t);line-height:1.5}
+.app{max-width:1000px;margin:0 auto;padding:16px}
+header{text-align:center;padding:24px 0 20px}
+header h1{font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--p),var(--pl));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+header p{color:var(--tl);font-size:.95rem}
+.hidden{display:none!important}
+.card{background:var(--c);border-radius:var(--r);box-shadow:var(--sh);padding:24px;margin-bottom:20px}
+.card-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid var(--b)}
+.card-header .icon{font-size:1.8rem}
+.card-header h2{font-size:1.3rem;font-weight:700;color:var(--p)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;border:none;border-radius:var(--rs);font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;transition:.2s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,var(--p),var(--pl));color:#fff}
+.btn-accent{background:linear-gradient(135deg,var(--a),#ff9e40);color:#fff}
+.btn-success{background:linear-gradient(135deg,var(--s),#43a047);color:#fff}
+.btn-danger{background:linear-gradient(135deg,var(--d),#e53935);color:#fff}
+.btn-outline{background:0;border:2px solid var(--b);color:var(--t)}
+.btn-outline:hover{border-color:var(--p);color:var(--p)}
+.btn-info{background:linear-gradient(135deg,#0288d1,#03a9f4);color:#fff}
+.btn-purple{background:linear-gradient(135deg,#7b1fa2,#9c27b0);color:#fff}
+.btn-sm{padding:10px 18px;font-size:.9rem}
+.btn-block{width:100%}
+.btn-group{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.menu-card{background:var(--c);border-radius:var(--r);box-shadow:var(--sh);padding:32px 24px;text-align:center;cursor:pointer;transition:.3s;border:3px solid transparent}
+.menu-card:hover{transform:translateY(-4px);border-color:var(--pl)}
+.menu-card .icon{font-size:3.5rem;margin-bottom:16px;display:block}
+.menu-card .title{font-size:1.25rem;font-weight:700;color:var(--p)}
+.menu-card .desc{font-size:.9rem;color:var(--tl);margin-top:8px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-weight:600;margin-bottom:8px}
+input,select{width:100%;padding:14px 16px;border:2px solid var(--b);border-radius:var(--rs);font-family:inherit;font-size:1rem;transition:.2s;background:#fff}
+input:focus,select:focus{outline:none;border-color:var(--p);box-shadow:0 0 0 4px rgba(13,71,161,.1)}
+input.dup{border-color:var(--w);background:#fff8e1}
+.fmt-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:8px}
+.fmt-opt{position:relative}
+.fmt-opt input[type="radio"]{position:absolute;opacity:0;width:0;height:0}
+.fmt-opt label{display:block;padding:16px;background:var(--bg);border:3px solid var(--b);border-radius:var(--rs);cursor:pointer;transition:.2s;text-align:center}
+.fmt-opt label:hover{border-color:var(--pl)}
+.fmt-opt input:checked+label{border-color:var(--p);background:#e3f2fd}
+.fmt-opt .fi{font-size:2rem;display:block;margin-bottom:8px}
+.fmt-opt .ft{font-weight:700;color:var(--p);margin-bottom:4px}
+.fmt-opt .fd{font-size:.85rem;color:var(--tl)}
+.plist{display:flex;flex-direction:column;gap:10px;max-height:50vh;overflow-y:auto;padding:4px}
+.pitem{display:flex;gap:10px;align-items:center}
+.pitem .num{width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--p);color:#fff;border-radius:50%;font-weight:700;font-size:.85rem;flex-shrink:0}
+.pitem input{flex:1}
+.pitem .rm{width:40px;height:40px;padding:0;border-radius:50%;background:#ffebee;color:var(--d);border:none;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:.2s}
+.pitem .rm:hover{background:var(--d);color:#fff}
+.sbar{display:flex;justify-content:space-between;padding:16px 20px;background:linear-gradient(135deg,var(--p),var(--pl));color:#fff;border-radius:var(--rs);margin-bottom:16px}
+.sbar .st{text-align:center}
+.sbar .sv{font-size:1.5rem;font-weight:800}
+.sbar .sl{font-size:.8rem;opacity:.9}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.pcard{background:var(--c);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.phdr{background:linear-gradient(135deg,var(--p),var(--pl));color:#fff;padding:16px 20px;font-weight:700;display:flex;justify-content:space-between}
+.pcnt{padding:16px}
+.mitm{display:flex;align-items:center;gap:8px;padding:12px;background:var(--bg);border-radius:var(--rs);margin-bottom:10px;flex-wrap:wrap}
+.mplr{flex:1;min-width:80px;padding:10px 14px;background:#fff;border-radius:8px;font-weight:500;cursor:pointer;text-align:center;border:2px solid transparent;transition:.2s}
+.mplr:hover{border-color:var(--pl);background:#e3f2fd}
+.mplr.win{background:linear-gradient(135deg,var(--s),#43a047);color:#fff;border-color:var(--s)}
+.mplr.lose{background:#ffebee;color:var(--d);opacity:.7}
+.mvs{font-weight:700;color:var(--tl);padding:0 4px}
+.mdet{width:100%;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+.mdet-btn{background:none;border:none;color:var(--pl);cursor:pointer;font-size:.85rem;text-decoration:underline}
+.mdet-score{font-size:.9rem;color:var(--s);font-weight:700;background:#e8f5e9;padding:2px 10px;border-radius:12px}
+.cls{margin-top:16px;border-top:2px solid var(--b);padding-top:16px}
+.clst{font-weight:700;margin-bottom:12px;color:var(--p)}
+.clsr{display:flex;align-items:center;padding:10px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px}
+.clsr.q{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border:2px solid var(--s)}
+.clsrk{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--p);color:#fff;border-radius:50%;font-weight:700;font-size:.85rem;margin-right:12px}
+.clsr.q .clsrk{background:var(--s)}
+.clsn{flex:1;font-weight:600}
+.clsp{font-weight:700;color:var(--p);background:#fff;padding:4px 12px;border-radius:20px}
+.bktc{overflow-x:auto;padding:20px 0}
+.bkt{display:flex;gap:40px;min-width:max-content}
+.bktr{display:flex;flex-direction:column;gap:20px;min-width:220px}
+.bktrt{text-align:center;font-weight:700;color:var(--p);padding:12px;background:#e3f2fd;border-radius:var(--rs);margin-bottom:10px}
+.bktm{background:var(--c);border-radius:var(--rs);box-shadow:var(--sh);overflow:hidden}
+.bktp{padding:14px 16px;font-weight:500;cursor:pointer;border-bottom:1px solid var(--b);transition:.2s;display:flex;justify-content:space-between;align-items:center}
+.bktp:last-child{border-bottom:none}
+.bktp:hover{background:#e3f2fd}
+.bktp.win{background:linear-gradient(135deg,var(--s),#43a047);color:#fff}
+.bktp.lose{background:#f5f5f5;color:#999}
+.bktp .sc{font-size:.85rem;opacity:.8}
+.bkt-det{text-align:center;padding:8px;border-top:1px solid var(--b)}
+.bkt-det button{background:none;border:none;color:var(--pl);cursor:pointer;font-size:.8rem;text-decoration:underline}
+.podc{text-align:center;padding:40px 20px}
+.pod{display:flex;justify-content:center;align-items:flex-end;gap:16px;margin:40px 0}
+.podb{width:120px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;border-radius:12px 12px 0 0;padding:20px 10px;color:#fff;font-weight:700}
+.pod1 .podb{background:linear-gradient(180deg,#ffd700,#ffb300);height:180px}
+.pod2 .podb{background:linear-gradient(180deg,#c0c0c0,#9e9e9e);height:140px}
+.pod3 .podb{background:linear-gradient(180deg,#cd7f32,#a0522d);height:100px}
+.podm{font-size:3rem;margin-bottom:8px}
+.podn{font-size:1rem;word-break:break-word;max-width:100px}
+.podr{font-size:1.8rem;margin-top:8px}
+.p4{margin-top:30px;padding:20px;background:#f5f5f5;border-radius:var(--r);display:inline-block}
+.p4 .l{font-size:.9rem;color:var(--tl)}
+.p4 .n{font-size:1.2rem;font-weight:700}
+.svl{display:flex;flex-direction:column;gap:12px}
+.svi{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:var(--c);border-radius:var(--rs);box-shadow:var(--sh);border:2px solid transparent;cursor:pointer;transition:.2s}
+.svi:hover{border-color:var(--pl);transform:translateX(4px)}
+.svi h3{font-weight:700;color:var(--p)}
+.svi p{font-size:.85rem;color:var(--tl)}
+.empty{text-align:center;padding:60px 20px;color:var(--tl)}
+.empty .icon{font-size:4rem;margin-bottom:16px;opacity:.5}
+.tctc{overflow-x:auto}
+.tctt{width:100%;border-collapse:collapse;min-width:500px}
+.tctt th,.tctt td{padding:12px;text-align:center;border:1px solid var(--b)}
+.tctt th{background:var(--p);color:#fff;font-weight:600}
+.tctt tr:nth-child(even){background:#f8fafc}
+.tctcl{cursor:pointer;transition:.2s}
+.tctcl:hover{background:#e3f2fd}
+.tctcl.win{background:#c8e6c9;color:var(--s);font-weight:700}
+.tctcl.lose{background:#ffcdd2;color:var(--d)}
+.tctcl.self{background:#e0e0e0;cursor:default}
+.pbar{width:100%;height:8px;background:var(--b);border-radius:4px;overflow:hidden;margin:12px 0}
+.pfill{height:100%;background:linear-gradient(90deg,var(--s),#66bb6a);border-radius:4px;transition:width .3s}
+.dz{border:3px dashed var(--b);border-radius:var(--r);padding:40px;text-align:center;transition:.3s;cursor:pointer;margin-bottom:20px}
+.dz.dov{border-color:var(--p);background:#e3f2fd}
+.dz .icon{font-size:3rem;margin-bottom:12px;color:var(--tl)}
+.dz p{color:var(--tl)}
+.ib{padding:16px;background:#e3f2fd;border-radius:var(--rs);border-left:4px solid var(--p);margin-top:16px}
+.ib.w{background:#fff8e1;border-left-color:var(--w)}
+.ib.d{background:#ffebee;border-left-color:var(--d)}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modal-content{background:#fff;border-radius:var(--r);max-width:500px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal-content.lg{max-width:900px}
+.modal-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:2px solid var(--b);background:linear-gradient(135deg,var(--p),var(--pl));color:#fff;border-radius:var(--r) var(--r) 0 0}
+.modal-header h3{font-size:1.3rem;font-weight:700}
+.modal-close{background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
+.modal-body{padding:24px}
+.modal-footer{padding:16px 24px;border-top:2px solid var(--b);display:flex;gap:12px;justify-content:flex-end}
+.score-match{text-align:center;margin-bottom:20px}
+.score-match .players{display:flex;justify-content:center;align-items:center;gap:16px;margin-bottom:16px}
+.score-match .player-name{font-size:1.1rem;font-weight:700;padding:12px 20px;border-radius:var(--rs);min-width:100px}
+.score-match .player-name.p1{background:#e3f2fd;color:var(--p)}
+.score-match .player-name.p2{background:#fff3e0;color:#e65100}
+.score-match .vs{font-weight:700;color:var(--tl)}
+.sets-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:20px}
+.set-col{text-align:center}
+.set-col .set-label{font-size:.85rem;font-weight:600;color:var(--tl);margin-bottom:8px}
+.set-col input{width:100%;padding:12px 4px;text-align:center;font-size:1.1rem;font-weight:700;border:2px solid var(--b);border-radius:8px}
+.set-col input:focus{border-color:var(--p)}
+.set-col input.win{background:#c8e6c9;border-color:var(--s)}
+.set-col input.lose{background:#ffcdd2;border-color:var(--d)}
+.score-summary{display:flex;justify-content:center;align-items:center;gap:20px;padding:16px;background:var(--bg);border-radius:var(--rs)}
+.score-summary .total{text-align:center}
+.score-summary .total .label{font-size:.85rem;color:var(--tl)}
+.score-summary .total .value{font-size:2rem;font-weight:800}
+.score-summary .total.winner .value{color:var(--s)}
+.score-summary .sep{font-size:1.5rem;color:var(--tl)}
+.quick-btns{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.quick-btns button{padding:8px 16px;border:2px solid var(--b);background:#fff;border-radius:8px;cursor:pointer;font-weight:600;transition:.2s}
+.quick-btns button:hover{border-color:var(--p);background:#e3f2fd}
+.print-table{width:100%;border-collapse:collapse;margin-bottom:20px}
+.print-table th,.print-table td{padding:12px;text-align:left;border:1px solid var(--b)}
+.print-table th{background:var(--p);color:#fff;font-weight:600}
+.print-table tr:nth-child(even){background:#f8fafc}
+.print-table .rank{width:50px;text-align:center;font-weight:700}
+.print-table .pts{text-align:center;font-weight:700;color:var(--p)}
+.print-section{margin-bottom:30px}
+.print-section h4{font-size:1.1rem;font-weight:700;color:var(--p);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--b)}
+@media(max-width:640px){.app{padding:12px}header h1{font-size:1.6rem}.card{padding:16px}.btn{padding:12px 16px;font-size:.9rem}.menu-card{padding:24px 16px}.menu-card .icon{font-size:2.5rem}.pgrid{grid-template-columns:1fr}.podb{width:90px}.pod1 .podb{height:140px}.pod2 .podb{height:110px}.pod3 .podb{height:80px}.fmt-opts{grid-template-columns:1fr}.sets-grid{gap:4px}.set-col input{padding:10px 2px;font-size:1rem}}
+@media print{body{background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.app,.modal,.btn-group{display:none!important}#print-area{display:block!important;padding:10px}.match-sheet{page-break-after:always;border:2px solid #000;padding:15px;margin-bottom:20px;background:#fff}.match-sheet:last-child{page-break-after:auto}.match-sheet-header{text-align:center;border-bottom:2px solid #000;padding-bottom:10px;margin-bottom:15px}.match-sheet-header h2{font-size:1.3rem;margin-bottom:5px}.match-sheet-players{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.match-sheet-player{flex:1;text-align:center;padding:15px;border:2px solid #000;font-size:1.2rem;font-weight:700}.match-sheet-vs{padding:0 20px;font-size:1.5rem;font-weight:700}.match-sheet-score table{width:100%;border-collapse:collapse}.match-sheet-score th,.match-sheet-score td{border:2px solid #000;padding:12px;text-align:center}.match-sheet-score th{background:#f0f0f0}.match-sheet-result{margin-top:15px;display:flex;border:2px solid #000;padding:10px}.match-sheet-result .winner-box{flex:1;text-align:center;padding:10px;border-right:2px solid #000}.match-sheet-result .winner-box:last-child{border-right:none}.match-sheet-footer{margin-top:15px;font-size:.85rem;color:#666;text-align:center;border-top:1px solid #ccc;padding-top:10px}}
+#print-area{display:none}
+</style>
+</head>
+<body>
+<div class="app">
+<header><h1>🏓 Tournoi Tennis de Table</h1><p>Gestionnaire complet de tournois</p></header>
+<div id="pg-menu"><div class="menu-grid"><div class="menu-card" onclick="newTournament()"><span class="icon">🆕</span><div class="title">Nouveau tournoi</div><div class="desc">Créer un nouveau tournoi individuel</div></div><div class="menu-card" onclick="showPage('saves')"><span class="icon">📂</span><div class="title">Charger un tournoi</div><div class="desc">Reprendre une sauvegarde</div></div><div class="menu-card" onclick="window.location.href='championnat-jeunes.html'" style="border-color:#ff9800"><span class="icon">👦</span><div class="title">Championnat Jeunes</div><div class="desc">Rencontres par équipes (3 joueurs)</div></div></div></div>
+<div id="pg-saves" class="hidden"><div class="btn-group"><button class="btn btn-outline" onclick="showPage('menu')">← Retour</button><button class="btn btn-danger btn-sm" onclick="clearSaves()">🗑️ Tout supprimer</button></div><div class="card"><div class="card-header"><span class="icon">📂</span><h2>Sauvegardes</h2></div><div id="svlist" class="svl"></div></div></div>
+<div id="pg-saisie" class="hidden"><div class="btn-group"><button class="btn btn-outline" onclick="showPage('menu')">← Menu</button><button class="btn btn-danger btn-sm" onclick="clearAll()">🗑️ Effacer</button><button class="btn btn-accent" onclick="simul()">🎲 Simuler</button><button class="btn btn-primary" onclick="goParams()">Suivant →</button></div><div class="card"><div class="card-header"><span class="icon">👥</span><h2>Participants</h2></div><div id="dz" class="dz" onclick="document.getElementById('fi').click()"><div class="icon">📄</div><p><strong>Glissez un fichier</strong> ou cliquez</p><p style="font-size:.85rem;margin-top:8px">.txt, .csv</p></div><input type="file" id="fi" accept=".txt,.csv" style="display:none" onchange="impFile(event)"><div class="sbar"><div class="st"><div class="sv" id="pcnt">0</div><div class="sl">Participants</div></div><div class="st"><div class="sv" id="dcnt">0</div><div class="sl">Doublons</div></div></div><div id="plist" class="plist"></div><button class="btn btn-primary btn-block" onclick="addP()" style="margin-top:16px">+ Ajouter</button></div><div id="warn-poules" class="ib d hidden"><p><strong>⚠️</strong> Des poules existent. Modifier les participants effacera les résultats.</p></div></div>
+<div id="pg-params" class="hidden"><div class="btn-group"><button class="btn btn-outline" onclick="showPage('saisie')">← Participants</button><button class="btn btn-success" onclick="createPoules()">Créer poules →</button></div><div class="card"><div class="card-header"><span class="icon">⚙️</span><h2>Paramètres</h2></div><div class="form-group"><label>Format phase finale</label><div class="fmt-opts"><div class="fmt-opt"><input type="radio" name="fmt" id="fmt-bkt" value="bracket" checked><label for="fmt-bkt"><span class="fi">🏆</span><div class="ft">Élimination directe</div><div class="fd">Tableau classique</div></label></div><div class="fmt-opt"><input type="radio" name="fmt" id="fmt-tct" value="tct"><label for="fmt-tct"><span class="fi">🔄</span><div class="ft">Tous contre tous</div><div class="fd">Chaque qualifié affronte tous les autres</div></label></div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><div class="form-group"><label>Nombre de poules</label><select id="nbp"><option value="auto">Auto</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="8">8</option></select></div><div class="form-group"><label>Qualifiés/poule</label><select id="nbq"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option></select></div></div><div id="prev" class="ib"><p id="prevt" style="text-align:center;font-weight:600;color:var(--p)"></p></div><div id="bktw" class="ib w hidden"><p><strong>⚠️</strong> Exemptions possibles (qualifiés ≠ 4/8/16)</p></div></div></div>
+<div id="pg-poules" class="hidden"><div class="btn-group"><button class="btn btn-outline" onclick="showPage('params')">← Params</button><button class="btn btn-purple" onclick="printMatchSheets('poules')">🏓 Feuilles</button><button class="btn btn-info" onclick="printPoules()">🖨️ Classements</button><button class="btn btn-accent" onclick="saveT()">💾 Sauver</button><button class="btn btn-success" id="btnfin" onclick="goFinale()">Phase finale →</button></div><div class="card" style="padding:16px"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-weight:600">Progression</span><span id="prgtxt">0%</span></div><div class="pbar"><div id="prgfill" class="pfill" style="width:0"></div></div></div><div id="plscnt" class="pgrid"></div></div>
+<div id="pg-finale" class="hidden"><div class="btn-group"><button class="btn btn-outline" onclick="showPage('poules')">← Poules</button><button class="btn btn-purple" onclick="printMatchSheets('finale')">🏓 Feuilles</button><button class="btn btn-accent" onclick="saveT()">💾 Sauver</button></div><div id="fincnt"></div></div>
+<div id="pg-podium" class="hidden"><div class="btn-group"><button class="btn btn-outline" onclick="showPage('menu')">← Menu</button><button class="btn btn-info" onclick="showClassement()">📊 Classement</button><button class="btn btn-info" onclick="printPodium()">🖨️ Podium</button><button class="btn btn-accent" onclick="expRes()">📥 Exporter</button></div><div class="card"><div class="podc" id="podcnt"></div></div></div>
+</div>
+<div id="modal-score" class="modal"><div class="modal-content"><div class="modal-header"><h3>🏓 Saisie du score</h3><button class="modal-close" onclick="closeScoreModal()">×</button></div><div class="modal-body"><div class="score-match"><div class="players"><div class="player-name p1" id="score-p1">J1</div><div class="vs">VS</div><div class="player-name p2" id="score-p2">J2</div></div></div><div class="sets-grid"><div class="set-col"><div class="set-label">Set 1</div><input type="number" id="s1p1" min="0" max="99" oninput="updateScore()"><input type="number" id="s1p2" min="0" max="99" oninput="updateScore()" style="margin-top:8px"></div><div class="set-col"><div class="set-label">Set 2</div><input type="number" id="s2p1" min="0" max="99" oninput="updateScore()"><input type="number" id="s2p2" min="0" max="99" oninput="updateScore()" style="margin-top:8px"></div><div class="set-col"><div class="set-label">Set 3</div><input type="number" id="s3p1" min="0" max="99" oninput="updateScore()"><input type="number" id="s3p2" min="0" max="99" oninput="updateScore()" style="margin-top:8px"></div><div class="set-col"><div class="set-label">Set 4</div><input type="number" id="s4p1" min="0" max="99" oninput="updateScore()"><input type="number" id="s4p2" min="0" max="99" oninput="updateScore()" style="margin-top:8px"></div><div class="set-col"><div class="set-label">Set 5</div><input type="number" id="s5p1" min="0" max="99" oninput="updateScore()"><input type="number" id="s5p2" min="0" max="99" oninput="updateScore()" style="margin-top:8px"></div></div><div class="score-summary"><div class="total" id="sum-p1"><div class="label" id="sum-p1-name">J1</div><div class="value" id="sum-p1-val">0</div></div><div class="sep">-</div><div class="total" id="sum-p2"><div class="label" id="sum-p2-name">J2</div><div class="value" id="sum-p2-val">0</div></div></div><div class="quick-btns"><button onclick="quickScore(3,0)">3-0</button><button onclick="quickScore(3,1)">3-1</button><button onclick="quickScore(3,2)">3-2</button><button onclick="quickScore(2,3)">2-3</button><button onclick="quickScore(1,3)">1-3</button><button onclick="quickScore(0,3)">0-3</button></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeScoreModal()">Annuler</button><button class="btn btn-danger btn-sm" onclick="clearMatch()">Effacer</button><button class="btn btn-success" onclick="saveScore()">Valider</button></div></div></div>
+<div id="modal-classement" class="modal"><div class="modal-content lg"><div class="modal-header"><h3>📊 Classement Général</h3><button class="modal-close" onclick="closeModal()">×</button></div><div class="modal-body" id="classement-content"></div><div class="modal-footer"><button class="btn btn-info" onclick="printClassement()">🖨️ Imprimer</button><button class="btn btn-outline" onclick="closeModal()">Fermer</button></div></div></div>
+<div id="print-area"></div>
+<script>
+let D={p:[],pls:[],rp:{},nbp:'auto',nbq:2,fmt:'bracket',q:[],pf:{},ch:null,se:null,th:null,fo:null,scores:{}};
+let currentMatch=null;
+document.addEventListener('DOMContentLoaded',()=>{renPL();ldSv();setupDZ();updPrev();document.getElementById('nbp').onchange=updPrev;document.getElementById('nbq').onchange=updPrev;document.querySelectorAll('input[name="fmt"]').forEach(r=>r.onchange=updPrev)});
+function newTournament(){D={p:[''],pls:[],rp:{},nbp:'auto',nbq:2,fmt:'bracket',q:[],pf:{},ch:null,se:null,th:null,fo:null,scores:{}};document.getElementById('nbp').value='auto';document.getElementById('nbq').value='2';document.getElementById('fmt-bkt').checked=true;renPL();showPage('saisie')}
+function clearAll(){if(confirm('Effacer tous les participants ?')){D.p=[''];renPL()}}
+function showPage(pg){['menu','saves','saisie','params','poules','finale','podium'].forEach(x=>document.getElementById('pg-'+x).classList.add('hidden'));document.getElementById('pg-'+pg).classList.remove('hidden');if(pg==='saves')ldSv();if(pg==='params')updPrev();if(pg==='saisie'){renPL();document.getElementById('warn-poules').classList.toggle('hidden',!D.pls||!D.pls.length)}}
+function setupDZ(){const dz=document.getElementById('dz');dz.ondragover=e=>{e.preventDefault();dz.classList.add('dov')};dz.ondragleave=()=>dz.classList.remove('dov');dz.ondrop=e=>{e.preventDefault();dz.classList.remove('dov');if(e.dataTransfer.files[0])procF(e.dataTransfer.files[0])}}
+function impFile(e){if(e.target.files[0])procF(e.target.files[0]);e.target.value=''}
+function procF(f){const r=new FileReader();r.onload=e=>{D.p=e.target.result.split(/[\n\r]+/).map(l=>l.trim()).filter(l=>l);if(!D.p.length)D.p=[''];renPL()};r.readAsText(f)}
+function renPL(){const c=document.getElementById('plist');if(!D.p.length)D.p=[''];const dup=findDup();c.innerHTML=D.p.map((p,i)=>'<div class="pitem"><div class="num">'+(i+1)+'</div><input type="text" id="p'+i+'" value="'+esc(p)+'" placeholder="Nom" class="'+(dup.includes(i)?'dup':'')+'" oninput="updP('+i+',this.value)" onkeydown="hKey(event,'+i+')"><button class="rm" onclick="rmP('+i+')">✕</button></div>').join('');updSt()}
+function findDup(){const idx=[],nm=D.p.map(p=>p.toLowerCase().trim()).filter(p=>p);nm.forEach((n,i)=>{if(nm.indexOf(n)!==i){idx.push(i);idx.push(nm.indexOf(n))}});return[...new Set(idx)]}
+function updSt(){document.getElementById('pcnt').textContent=D.p.filter(p=>p.trim()).length;document.getElementById('dcnt').textContent=findDup().length}
+function addP(){if(D.p.length>=50)return alert('Max 50');D.p.push('');renPL();setTimeout(()=>{const l=document.getElementById('p'+(D.p.length-1));if(l)l.focus()},50)}
+function rmP(i){D.p.splice(i,1);if(!D.p.length)D.p=[''];renPL()}
+function updP(i,v){D.p[i]=v;updSt();const dup=findDup();D.p.forEach((p,j)=>{const inp=document.getElementById('p'+j);if(inp)inp.classList.toggle('dup',dup.includes(j))})}
+function hKey(e,i){if(e.key==='Enter'){e.preventDefault();if(i===D.p.length-1)addP();else{const n=document.getElementById('p'+(i+1));if(n)n.focus()}}}
+function simul(){const nm=['Alice','Bob','Charlie','David','Emma','François','Gabriel','Hugo','Isabelle','Julie','Kevin','Lucas','Marie','Nicolas','Olivier','Pierre','Quentin','Romain','Sophie','Thomas'];D.p=shuf(nm).slice(0,Math.floor(Math.random()*10)+8);renPL()}
+function updPrev(){const v=D.p.filter(p=>p.trim()),np=document.getElementById('nbp').value,nq=+document.getElementById('nbq').value,fmt=document.querySelector('input[name="fmt"]:checked').value;let pc=np==='auto'?Math.max(1,Math.ceil(v.length/5)):+np;const tq=pc*nq,pt=document.getElementById('prevt'),bw=document.getElementById('bktw');if(v.length<2){pt.textContent='Min 2 participants';bw.classList.add('hidden');return}pt.innerHTML=v.length+' joueurs → '+pc+' poule'+(pc>1?'s':'')+' → '+tq+' qualifié'+(tq>1?'s':'')+' → '+(fmt==='bracket'?'Élimination':'Tous contre tous');bw.classList.toggle('hidden',fmt!=='bracket'||isPow2(tq)||tq<=1)}
+function goParams(){const v=D.p.filter(p=>p.trim());if(v.length<2)return alert('Min 2 participants');if(findDup().length&&!confirm('Doublons détectés. Continuer ?'))return;showPage('params')}
+function createPoules(){if(D.pls&&D.pls.length&&!confirm('⚠️ Résultats existants seront perdus. Continuer ?'))return;const v=D.p.filter(p=>p.trim()),npv=document.getElementById('nbp').value;D.nbq=+document.getElementById('nbq').value;D.fmt=document.querySelector('input[name="fmt"]:checked').value;let pc=npv==='auto'?Math.max(1,Math.ceil(v.length/5)):+npv;D.nbp=pc;const sh=shuf(v);D.pls=[];for(let i=0;i<pc;i++)D.pls.push([]);sh.forEach((p,i)=>D.pls[i%pc].push(p));D.rp={};D.pls.forEach((pl,pi)=>{D.rp[pi]={};pl.forEach(p=>{D.rp[pi][p]={v:0,d:0,pts:0,m:{}}})});D.scores={};D.q=[];D.pf={};D.ch=null;D.se=null;D.th=null;D.fo=null;renPls();showPage('poules')}
+function getScoreKey(j1,j2){return[j1,j2].sort().join('|||')}
+function getMatchScore(j1,j2){return D.scores[getScoreKey(j1,j2)]||null}
+function setMatchScore(j1,j2,sc){const k=getScoreKey(j1,j2);if(sc)D.scores[k]=sc;else delete D.scores[k]}
+function formatScore(j1,j2){const sc=getMatchScore(j1,j2);if(!sc)return'';return sc.sets.filter(s=>s&&s.p1>s.p2).length+'-'+sc.sets.filter(s=>s&&s.p2>s.p1).length}
+function openScoreModal(type,pi,j1,j2,ri,mi){currentMatch={type,pi,j1,j2,ri,mi};document.getElementById('score-p1').textContent=j1;document.getElementById('score-p2').textContent=j2;document.getElementById('sum-p1-name').textContent=j1.substring(0,8);document.getElementById('sum-p2-name').textContent=j2.substring(0,8);const sc=getMatchScore(j1,j2);for(let i=1;i<=5;i++){const i1=document.getElementById('s'+i+'p1'),i2=document.getElementById('s'+i+'p2');if(sc&&sc.sets[i-1]){if(sc.j1===j1){i1.value=sc.sets[i-1].p1||'';i2.value=sc.sets[i-1].p2||''}else{i1.value=sc.sets[i-1].p2||'';i2.value=sc.sets[i-1].p1||''}}else{i1.value='';i2.value=''}}updateScore();document.getElementById('modal-score').classList.add('show')}
+function closeScoreModal(){document.getElementById('modal-score').classList.remove('show');currentMatch=null}
+function updateScore(){let s1=0,s2=0;for(let i=1;i<=5;i++){const v1=parseInt(document.getElementById('s'+i+'p1').value)||0,v2=parseInt(document.getElementById('s'+i+'p2').value)||0,i1=document.getElementById('s'+i+'p1'),i2=document.getElementById('s'+i+'p2');i1.classList.remove('win','lose');i2.classList.remove('win','lose');if(v1>0||v2>0){if(v1>v2){s1++;i1.classList.add('win');i2.classList.add('lose')}else if(v2>v1){s2++;i2.classList.add('win');i1.classList.add('lose')}}}document.getElementById('sum-p1-val').textContent=s1;document.getElementById('sum-p2-val').textContent=s2;document.getElementById('sum-p1').classList.toggle('winner',s1>=3);document.getElementById('sum-p2').classList.toggle('winner',s2>=3)}
+function quickScore(s1,s2){for(let i=1;i<=5;i++){const i1=document.getElementById('s'+i+'p1'),i2=document.getElementById('s'+i+'p2');i1.value='';i2.value=''}let c1=0,c2=0,idx=1;while(c1<s1||c2<s2){if(c1<s1){document.getElementById('s'+idx+'p1').value=11;document.getElementById('s'+idx+'p2').value=Math.floor(Math.random()*9);c1++}else{document.getElementById('s'+idx+'p1').value=Math.floor(Math.random()*9);document.getElementById('s'+idx+'p2').value=11;c2++}idx++}updateScore()}
+function clearMatch(){for(let i=1;i<=5;i++){document.getElementById('s'+i+'p1').value='';document.getElementById('s'+i+'p2').value=''}updateScore()}
+function saveScore(){if(!currentMatch)return;const{type,pi,j1,j2,ri,mi}=currentMatch,sets=[];let s1=0,s2=0;for(let i=1;i<=5;i++){const v1=parseInt(document.getElementById('s'+i+'p1').value)||0,v2=parseInt(document.getElementById('s'+i+'p2').value)||0;if(v1||v2){sets.push({p1:v1,p2:v2});if(v1>v2)s1++;else if(v2>v1)s2++}else sets.push(null)}let winner=s1>=3?j1:(s2>=3?j2:null);if(winner)setMatchScore(j1,j2,{j1,j2,sets,winner,setsWon:{p1:s1,p2:s2}});else setMatchScore(j1,j2,null);if(type==='poule')applyPouleResult(pi,j1,j2,winner);else if(type==='bkt')applyBktResult(ri,mi,winner,j1,j2);else if(type==='pf')applyPfResult(winner,j1,j2);else if(type==='tct')applyTctResult(j1,j2,winner);closeScoreModal()}
+function applyPouleResult(pi,j1,j2,winner){const r=D.rp[pi];if(r[j1].m[j2]){if(r[j1].m[j2]==='w'){r[j1].v--;r[j1].pts-=2;r[j2].d--;r[j2].pts--}else{r[j2].v--;r[j2].pts-=2;r[j1].d--;r[j1].pts--}r[j1].m[j2]=null;r[j2].m[j1]=null}if(winner===j1){r[j1].m[j2]='w';r[j2].m[j1]='l';r[j1].v++;r[j1].pts+=2;r[j2].d++;r[j2].pts++}else if(winner===j2){r[j1].m[j2]='l';r[j2].m[j1]='w';r[j2].v++;r[j2].pts+=2;r[j1].d++;r[j1].pts++}renPls()}
+function applyBktResult(ri,mi,winner,j1,j2){const rds=D.pf.rds,m=rds[ri].ms[mi];if(!winner){m.w=null;renBkt();return}m.w=winner;const loser=winner===j1?j2:j1;if(ri<rds.length-1){const nmi=Math.floor(mi/2),nm=rds[ri+1].ms[nmi];if(mi%2===0)nm.j1=winner;else nm.j2=winner}if(rds[ri].nm==='Demi-finales'){if(mi===0)D.pf.pf.j1=loser;else D.pf.pf.j2=loser}const fin=rds[rds.length-1].ms[0];if(fin.w){D.ch=fin.w;D.se=fin.w===fin.j1?fin.j2:fin.j1}renBkt();chkEnd()}
+function applyPfResult(winner,j1,j2){if(!winner){D.pf.pf.w=null;renBkt();return}D.pf.pf.w=winner;D.th=winner;D.fo=winner===j1?j2:j1;renBkt();chkEnd()}
+function applyTctResult(j1,j2,winner){const rs=D.pf.rs,cur=rs[j1].m[j2];if(cur==='w'){rs[j1].pts-=2;rs[j2].pts--}else if(cur==='l'){rs[j2].pts-=2;rs[j1].pts--}rs[j1].m[j2]=null;rs[j2].m[j1]=null;if(winner===j1){rs[j1].m[j2]='w';rs[j2].m[j1]='l';rs[j1].pts+=2;rs[j2].pts++}else if(winner===j2){rs[j1].m[j2]='l';rs[j2].m[j1]='w';rs[j2].pts+=2;rs[j1].pts++}renTCT()}
+function renPls(){const c=document.getElementById('plscnt');c.innerHTML=D.pls.map((pl,pi)=>{const lt=String.fromCharCode(65+pi),ms=getMs(pl),cls=getCls(pi);return'<div class="pcard"><div class="phdr"><span>Poule '+lt+'</span><span>'+pl.length+' joueurs</span></div><div class="pcnt">'+ms.map(m=>renM(pi,m)).join('')+'<div class="cls"><div class="clst">📊 Classement</div>'+cls.map((c,ci)=>'<div class="clsr'+(ci<D.nbq?' q':'')+'"><div class="clsrk">'+(ci+1)+'</div><div class="clsn">'+esc(c.n)+'</div><div class="clsp">'+c.pts+' pts</div></div>').join('')+'</div></div></div>'}).join('');updPrg()}
+function getMs(pl){const ms=[];for(let i=0;i<pl.length;i++)for(let j=i+1;j<pl.length;j++)ms.push({j1:pl[i],j2:pl[j]});return ms}
+function renM(pi,m){const r=D.rp[pi][m.j1]?.m[m.j2],c1=r==='w'?'win':(r==='l'?'lose':''),c2=r==='l'?'win':(r==='w'?'lose':''),sc=formatScore(m.j1,m.j2);return'<div class="mitm"><div class="mplr '+c1+'" onclick="setRQuick('+pi+',\''+escJ(m.j1)+'\',\''+escJ(m.j2)+'\',\'j1\')">'+esc(m.j1)+'</div><span class="mvs">VS</span><div class="mplr '+c2+'" onclick="setRQuick('+pi+',\''+escJ(m.j1)+'\',\''+escJ(m.j2)+'\',\'j2\')">'+esc(m.j2)+'</div><div class="mdet">'+(sc?'<span class="mdet-score">'+sc+'</span>':'')+'<button class="mdet-btn" onclick="openScoreModal(\'poule\','+pi+',\''+escJ(m.j1)+'\',\''+escJ(m.j2)+'\')">✏️ Détails</button></div></div>'}
+function setRQuick(pi,j1,j2,w){const winner=w==='j1'?j1:j2;setMatchScore(j1,j2,{j1,j2,sets:[{p1:11,p2:5},{p1:11,p2:7},{p1:11,p2:6},null,null],winner,setsWon:{p1:w==='j1'?3:0,p2:w==='j2'?3:0}});applyPouleResult(pi,j1,j2,winner)}
+function getCls(pi){const r=D.rp[pi],cls=Object.keys(r).map(n=>({n,...r[n]}));cls.sort((a,b)=>b.pts!==a.pts?b.pts-a.pts:b.v!==a.v?b.v-a.v:a.d-b.d);return cls}
+function updPrg(){let tot=0,done=0;D.pls.forEach((pl,pi)=>{const ms=getMs(pl);tot+=ms.length;ms.forEach(m=>{if(D.rp[pi][m.j1]?.m[m.j2])done++})});const pct=tot?Math.round(done/tot*100):0;document.getElementById('prgfill').style.width=pct+'%';document.getElementById('prgtxt').textContent=pct+'%';document.getElementById('btnfin').classList.toggle('btn-success',pct===100);document.getElementById('btnfin').classList.toggle('btn-outline',pct!==100)}
+function goFinale(){D.q=[];D.pls.forEach((pl,pi)=>{const cls=getCls(pi);for(let i=0;i<D.nbq&&i<cls.length;i++)D.q.push({n:cls[i].n,pl:pi,rk:i+1})});if(D.q.length<2)return alert('Pas assez de qualifiés');if(D.fmt==='tct')initTCT();else initBkt();showPage('finale')}
+function isPow2(n){return n>0&&(n&(n-1))===0}
+function nxtPow2(n){let p=1;while(p<n)p*=2;return p}
+function initBkt(){const n=D.q.length;D.pf={t:'bkt',rds:[]};const ts=nxtPow2(n);let pls=shuf(D.q.map(q=>q.n));while(pls.length<ts)pls.push('BYE');let cur=pls;while(cur.length>1){const rd={nm:getRdNm(cur.length),ms:[]};for(let i=0;i<cur.length;i+=2){const j1=cur[i],j2=cur[i+1];let w=null;if(j2==='BYE')w=j1;else if(j1==='BYE')w=j2;rd.ms.push({j1,j2,w})}D.pf.rds.push(rd);cur=rd.ms.map(m=>m.w||null)}propBye();D.pf.pf={j1:null,j2:null,w:null};renBkt()}
+function propBye(){const rds=D.pf.rds;for(let ri=0;ri<rds.length-1;ri++)rds[ri].ms.forEach((m,mi)=>{if(m.w&&(m.j1==='BYE'||m.j2==='BYE')){const nmi=Math.floor(mi/2),nm=rds[ri+1].ms[nmi];if(mi%2===0)nm.j1=m.w;else nm.j2=m.w;if(nm.j1&&nm.j2){if(nm.j2==='BYE')nm.w=nm.j1;else if(nm.j1==='BYE')nm.w=nm.j2}}})}
+function getRdNm(n){return n===2?'Finale':n===4?'Demi-finales':n===8?'Quarts':n===16?'Huitièmes':'1/'+n}
+function renBkt(){const c=document.getElementById('fincnt'),rds=D.pf.rds;let h='<div class="card"><div class="card-header"><span class="icon">🏆</span><h2>Élimination directe</h2></div><div class="bktc"><div class="bkt">';rds.forEach((rd,ri)=>{h+='<div class="bktr"><div class="bktrt">'+rd.nm+'</div>';rd.ms.forEach((m,mi)=>{if((m.j1==='BYE'||m.j2==='BYE')&&m.w)h+='<div class="bktm" style="opacity:.5"><div class="bktp win"><span>'+m.w+' (exempt)</span></div></div>';else{const sc=formatScore(m.j1,m.j2);h+='<div class="bktm"><div class="bktp '+(m.w===m.j1?'win':(m.w===m.j2?'lose':''))+'" onclick="setBktQuick('+ri+','+mi+',\'j1\')"><span>'+(m.j1||'...')+'</span>'+(m.w===m.j1&&sc?'<span class="sc">'+sc+'</span>':'')+'</div><div class="bktp '+(m.w===m.j2?'win':(m.w===m.j1?'lose':''))+'" onclick="setBktQuick('+ri+','+mi+',\'j2\')"><span>'+(m.j2||'...')+'</span>'+(m.w===m.j2&&sc?'<span class="sc">'+sc.split('-').reverse().join('-')+'</span>':'')+'</div>';if(m.j1&&m.j2&&m.j1!=='BYE'&&m.j2!=='BYE')h+='<div class="bkt-det"><button onclick="event.stopPropagation();openScoreModal(\'bkt\',null,\''+escJ(m.j1)+'\',\''+escJ(m.j2)+'\','+ri+','+mi+')">✏️ Détails</button></div>';h+='</div>'}});h+='</div>'});const pf=D.pf.pf;if(pf.j1&&pf.j2){const sc=formatScore(pf.j1,pf.j2);h+='<div class="bktr"><div class="bktrt">Petite finale</div><div class="bktm"><div class="bktp '+(pf.w===pf.j1?'win':(pf.w===pf.j2?'lose':''))+'" onclick="setPfQuick(\'j1\')"><span>'+pf.j1+'</span></div><div class="bktp '+(pf.w===pf.j2?'win':(pf.w===pf.j1?'lose':''))+'" onclick="setPfQuick(\'j2\')"><span>'+pf.j2+'</span></div><div class="bkt-det"><button onclick="event.stopPropagation();openScoreModal(\'pf\',null,\''+escJ(pf.j1)+'\',\''+escJ(pf.j2)+'\')">✏️ Détails</button></div></div></div>'}h+='</div></div></div>';c.innerHTML=h}
+function setBktQuick(ri,mi,pl){const m=D.pf.rds[ri].ms[mi];if(!m.j1||!m.j2||m.j1==='BYE'||m.j2==='BYE')return;const winner=pl==='j1'?m.j1:m.j2;setMatchScore(m.j1,m.j2,{j1:m.j1,j2:m.j2,sets:[{p1:11,p2:5},{p1:11,p2:7},{p1:11,p2:6},null,null],winner,setsWon:{p1:pl==='j1'?3:0,p2:pl==='j2'?3:0}});applyBktResult(ri,mi,winner,m.j1,m.j2)}
+function setPfQuick(pl){const pf=D.pf.pf;if(!pf.j1||!pf.j2)return;const winner=pl==='j1'?pf.j1:pf.j2;setMatchScore(pf.j1,pf.j2,{j1:pf.j1,j2:pf.j2,sets:[{p1:11,p2:5},{p1:11,p2:7},{p1:11,p2:6},null,null],winner,setsWon:{p1:pl==='j1'?3:0,p2:pl==='j2'?3:0}});applyPfResult(winner,pf.j1,pf.j2)}
+function chkEnd(){if(D.ch&&D.se&&D.th&&D.fo)setTimeout(()=>{if(confirm('🏆 Terminé! Voir podium?'))showPod()},300)}
+function initTCT(){const pls=shuf(D.q.map(q=>q.n));D.pf={t:'tct',pls,rs:{}};pls.forEach(p1=>{D.pf.rs[p1]={pts:0,m:{}};pls.forEach(p2=>D.pf.rs[p1].m[p2]=null)});renTCT()}
+function renTCT(){const c=document.getElementById('fincnt'),pls=D.pf.pls,rs=D.pf.rs,cls=pls.map(p=>({n:p,pts:rs[p].pts})).sort((a,b)=>b.pts-a.pts);let h='<div class="card"><div class="card-header"><span class="icon">🔄</span><h2>Tous contre tous</h2></div><div class="tctc"><table class="tctt"><tr><th></th>'+pls.map(p=>'<th>'+esc(p.substring(0,6))+'</th>').join('')+'<th>Pts</th></tr>'+pls.map(p1=>'<tr><th>'+esc(p1)+'</th>'+pls.map(p2=>{if(p1===p2)return'<td class="tctcl self">-</td>';const r=rs[p1].m[p2],sc=formatScore(p1,p2),cl=r==='w'?'win':(r==='l'?'lose':''),tx=r==='w'?'V'+(sc?' '+sc:''):(r==='l'?'D':'');return'<td class="tctcl '+cl+'" onclick="openScoreModal(\'tct\',null,\''+escJ(p1)+'\',\''+escJ(p2)+'\')">'+tx+'</td>'}).join('')+'<td><strong>'+rs[p1].pts+'</strong></td></tr>').join('')+'</table></div><div class="cls" style="margin-top:20px"><div class="clst">🏆 Classement</div>'+cls.map((c,i)=>'<div class="clsr'+(i<4?' q':'')+'"><div class="clsrk">'+(i+1)+'</div><div class="clsn">'+esc(c.n)+'</div><div class="clsp">'+c.pts+' pts</div></div>').join('')+'</div><button class="btn btn-success btn-block" style="margin-top:20px" onclick="finTCT()">🏆 Terminer</button></div>';c.innerHTML=h}
+function finTCT(){const cls=D.pf.pls.map(p=>({n:p,pts:D.pf.rs[p].pts})).sort((a,b)=>b.pts-a.pts);D.ch=cls[0]?.n;D.se=cls[1]?.n;D.th=cls[2]?.n;D.fo=cls[3]?.n;showPod()}
+function showPod(){document.getElementById('podcnt').innerHTML='<h2 style="font-size:2rem;margin-bottom:12px">🏆 Tournoi terminé!</h2><p style="color:var(--tl);margin-bottom:30px">Félicitations!</p><div class="pod"><div class="pod2"><div class="podb"><div class="podm">🥈</div><div class="podn">'+esc(D.se||'-')+'</div><div class="podr">2</div></div></div><div class="pod1"><div class="podb"><div class="podm">🥇</div><div class="podn">'+esc(D.ch||'-')+'</div><div class="podr">1</div></div></div><div class="pod3"><div class="podb"><div class="podm">🥉</div><div class="podn">'+esc(D.th||'-')+'</div><div class="podr">3</div></div></div></div><div class="p4"><div class="l">4ème</div><div class="n">'+esc(D.fo||'-')+'</div></div>';showPage('podium')}
+function generateMatchSheet(j1,j2,phase,num){const sc=getMatchScore(j1,j2);return'<div class="match-sheet"><div class="match-sheet-header"><h2>🏓 TOURNOI TENNIS DE TABLE</h2><div class="phase">'+phase+' - Match n°'+num+'</div><div style="font-size:.85rem;color:#999;margin-top:5px">'+new Date().toLocaleDateString('fr-FR')+'</div></div><div class="match-sheet-players"><div class="match-sheet-player" style="background:#e3f2fd">'+esc(j1)+'</div><div class="match-sheet-vs">VS</div><div class="match-sheet-player" style="background:#fff3e0">'+esc(j2)+'</div></div><div class="match-sheet-score"><table><tr><th>Joueur</th><th>Set 1</th><th>Set 2</th><th>Set 3</th><th>Set 4</th><th>Set 5</th></tr><tr><td style="font-weight:700;background:#e3f2fd">'+esc(j1)+'</td>'+(sc&&sc.sets?sc.sets.map(s=>'<td>'+(s?(sc.j1===j1?s.p1:s.p2):'')+'</td>').join(''):'<td></td><td></td><td></td><td></td><td></td>')+'</tr><tr><td style="font-weight:700;background:#fff3e0">'+esc(j2)+'</td>'+(sc&&sc.sets?sc.sets.map(s=>'<td>'+(s?(sc.j1===j1?s.p2:s.p1):'')+'</td>').join(''):'<td></td><td></td><td></td><td></td><td></td>')+'</tr></table></div><div class="match-sheet-result"><div class="winner-box"><label>SETS</label><div>'+esc(j1)+': '+(sc?sc.setsWon.p1:'__')+' - '+esc(j2)+': '+(sc?sc.setsWon.p2:'__')+'</div></div><div class="winner-box"><label>VAINQUEUR</label><div style="font-weight:700">'+(sc?sc.winner:'________________')+'</div></div></div><div class="match-sheet-footer"><p>3 sets gagnants • 11 points/set • 2 pts écart min</p></div></div>'}
+function printMatchSheets(phase){let html='',num=1;if(phase==='poules')D.pls.forEach((pl,pi)=>{getMs(pl).forEach(m=>{html+=generateMatchSheet(m.j1,m.j2,'Poule '+String.fromCharCode(65+pi),num++)})});else if(phase==='finale'&&D.pf.t==='bkt'){D.pf.rds.forEach(rd=>rd.ms.forEach(m=>{if(m.j1&&m.j2&&m.j1!=='BYE'&&m.j2!=='BYE')html+=generateMatchSheet(m.j1,m.j2,rd.nm,num++)}));if(D.pf.pf?.j1&&D.pf.pf?.j2)html+=generateMatchSheet(D.pf.pf.j1,D.pf.pf.j2,'Petite finale',num++)}else if(phase==='finale'&&D.pf.t==='tct'){const pls=D.pf.pls;for(let i=0;i<pls.length;i++)for(let j=i+1;j<pls.length;j++)html+=generateMatchSheet(pls[i],pls[j],'Tous contre tous',num++)}if(!html)return alert('Rien à imprimer');doPrint(html)}
+function getClassementGeneral(){const all={};D.pls.forEach((pl,pi)=>{getCls(pi).forEach((c,ci)=>{all[c.n]={nom:c.n,ptsPoule:c.pts,vPoule:c.v,dPoule:c.d,poule:String.fromCharCode(65+pi),rangPoule:ci+1,qualifie:ci<D.nbq,ptsFinale:0}})});if(D.pf.t==='tct'&&D.pf.rs)Object.keys(D.pf.rs).forEach(n=>{if(all[n])all[n].ptsFinale=D.pf.rs[n].pts});const podium=[D.ch,D.se,D.th,D.fo];Object.keys(all).forEach(n=>{all[n].rangFinal=podium.indexOf(n)>=0?podium.indexOf(n)+1:99});return Object.values(all).sort((a,b)=>a.rangFinal!==b.rangFinal?a.rangFinal-b.rangFinal:b.ptsPoule-a.ptsPoule)}
+function showClassement(){const cls=getClassementGeneral();let h='<div class="print-section"><h4>🏆 Podium</h4><table class="print-table"><tr><th>Rang</th><th>Joueur</th></tr><tr><td class="rank">🥇</td><td><strong>'+esc(D.ch||'-')+'</strong></td></tr><tr><td class="rank">🥈</td><td><strong>'+esc(D.se||'-')+'</strong></td></tr><tr><td class="rank">🥉</td><td><strong>'+esc(D.th||'-')+'</strong></td></tr><tr><td class="rank">4</td><td>'+esc(D.fo||'-')+'</td></tr></table></div><div class="print-section"><h4>📊 Classement Complet</h4><table class="print-table"><tr><th class="rank">#</th><th>Joueur</th><th>Poule</th><th class="pts">Pts</th><th class="pts">V</th><th class="pts">D</th></tr>';cls.forEach((c,i)=>{h+='<tr><td class="rank">'+(i+1)+'</td><td>'+(i<4?'<strong>':'')+esc(c.nom)+(i<4?'</strong>':'')+'</td><td>'+c.poule+'</td><td class="pts">'+c.ptsPoule+'</td><td class="pts">'+c.vPoule+'</td><td class="pts">'+c.dPoule+'</td></tr>'});h+='</table></div>';document.getElementById('classement-content').innerHTML=h;document.getElementById('modal-classement').classList.add('show')}
+function closeModal(){document.getElementById('modal-classement').classList.remove('show')}
+function printPoules(){let h='<h2 style="text-align:center;color:#0d47a1;margin-bottom:20px">🏓 Classements des Poules</h2>';D.pls.forEach((pl,pi)=>{const cls=getCls(pi);h+='<div class="print-section"><h4>Poule '+String.fromCharCode(65+pi)+'</h4><table class="print-table"><tr><th class="rank">#</th><th>Joueur</th><th class="pts">V</th><th class="pts">D</th><th class="pts">Pts</th></tr>';cls.forEach((c,ci)=>{h+='<tr><td class="rank">'+(ci+1)+'</td><td>'+esc(c.n)+'</td><td class="pts">'+c.v+'</td><td class="pts">'+c.d+'</td><td class="pts">'+c.pts+'</td></tr>'});h+='</table></div>'});doPrint(h)}
+function printPodium(){
+const dt=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+const nbJ=D.p.filter(p=>p.trim()).length;
+const nbP=D.pls.length;
+doPrint(`
+<div style="font-family:Arial,sans-serif;max-width:700px;margin:0 auto;padding:20px">
+<div style="text-align:center;border:4px solid #0d47a1;border-radius:20px;padding:30px;background:linear-gradient(180deg,#e3f2fd 0%,#fff 100%)">
+<div style="font-size:4rem;margin-bottom:10px">🏓</div>
+<h1 style="font-size:2.2rem;color:#0d47a1;margin:0 0 5px 0;text-transform:uppercase;letter-spacing:2px">Tournoi de Tennis de Table</h1>
+<p style="color:#666;font-size:1.1rem;margin:0">${dt}</p>
+<p style="color:#999;font-size:.9rem;margin:5px 0 0 0">${nbJ} participants • ${nbP} poule${nbP>1?'s':''}</p>
+</div>
+<div style="margin:40px 0;text-align:center">
+<h2 style="font-size:1.8rem;color:#333;margin-bottom:30px;border-bottom:3px solid #ffd700;display:inline-block;padding-bottom:10px">🏆 PODIUM FINAL 🏆</h2>
+<div style="display:flex;justify-content:center;align-items:flex-end;gap:15px;margin:30px 0">
+<div style="text-align:center">
+<div style="background:linear-gradient(180deg,#e8e8e8,#c0c0c0);width:140px;height:100px;border-radius:10px 10px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid #a0a0a0;border-bottom:none">
+<div style="font-size:2.5rem">🥈</div>
+<div style="font-size:1.1rem;font-weight:bold;color:#333;padding:0 10px;word-break:break-word">${esc(D.se||'-')}</div>
+</div>
+<div style="background:#c0c0c0;color:#fff;font-size:1.5rem;font-weight:bold;padding:8px;border-radius:0 0 10px 10px;border:3px solid #a0a0a0;border-top:none">2</div>
+</div>
+<div style="text-align:center">
+<div style="background:linear-gradient(180deg,#fff7cc,#ffd700);width:160px;height:140px;border-radius:10px 10px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid #daa520;border-bottom:none;box-shadow:0 0 20px rgba(255,215,0,0.5)">
+<div style="font-size:3.5rem">🥇</div>
+<div style="font-size:1.3rem;font-weight:bold;color:#333;padding:0 10px;word-break:break-word">${esc(D.ch||'-')}</div>
+<div style="font-size:.85rem;color:#666;margin-top:5px">CHAMPION</div>
+</div>
+<div style="background:#ffd700;color:#333;font-size:1.8rem;font-weight:bold;padding:10px;border-radius:0 0 10px 10px;border:3px solid #daa520;border-top:none">1</div>
+</div>
+<div style="text-align:center">
+<div style="background:linear-gradient(180deg,#e8c8a8,#cd7f32);width:130px;height:80px;border-radius:10px 10px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid #a0522d;border-bottom:none">
+<div style="font-size:2rem">🥉</div>
+<div style="font-size:1rem;font-weight:bold;color:#fff;padding:0 10px;word-break:break-word;text-shadow:1px 1px 2px rgba(0,0,0,0.3)">${esc(D.th||'-')}</div>
+</div>
+<div style="background:#cd7f32;color:#fff;font-size:1.3rem;font-weight:bold;padding:6px;border-radius:0 0 10px 10px;border:3px solid #a0522d;border-top:none">3</div>
+</div>
+</div>
+<div style="margin-top:30px;padding:15px 30px;background:#f5f5f5;border-radius:10px;display:inline-block">
+<span style="color:#666;font-size:1rem">4ème place : </span>
+<span style="font-size:1.2rem;font-weight:bold;color:#333">${esc(D.fo||'-')}</span>
+</div>
+</div>
+<div style="margin-top:40px;text-align:center;padding-top:20px;border-top:2px dashed #ddd">
+<p style="color:#999;font-size:.85rem;margin:0">🏓 Tournoi organisé avec passion 🏓</p>
+</div>
+</div>
+`)}
+function printClassement(){const cls=getClassementGeneral();let h='<h2 style="text-align:center;color:#0d47a1;margin-bottom:20px">🏓 Classement Général</h2><table class="print-table"><tr><th class="rank">#</th><th>Joueur</th><th>Poule</th><th class="pts">Pts</th></tr>';cls.forEach((c,i)=>{h+='<tr><td class="rank">'+(i+1)+'</td><td>'+esc(c.nom)+'</td><td>'+c.poule+'</td><td class="pts">'+c.ptsPoule+'</td></tr>'});h+='</table>';closeModal();doPrint(h)}
+function doPrint(c){document.getElementById('print-area').innerHTML=c;document.getElementById('print-area').style.display='block';setTimeout(()=>{window.print();document.getElementById('print-area').style.display='none'},100)}
+function saveT(){const nm=prompt('Nom:','Tournoi '+new Date().toLocaleDateString('fr-FR'));if(!nm)return;const sv=JSON.parse(localStorage.getItem('tt_sv')||'[]'),idx=sv.findIndex(s=>s.nm===nm);if(idx>=0&&!confirm('Remplacer?'))return;const dt={nm,dt:new Date().toISOString(),d:JSON.parse(JSON.stringify(D))};if(idx>=0)sv[idx]=dt;else sv.unshift(dt);localStorage.setItem('tt_sv',JSON.stringify(sv));alert('✅ Sauvegardé!')}
+function ldSv(){const c=document.getElementById('svlist'),sv=JSON.parse(localStorage.getItem('tt_sv')||'[]');if(!sv.length){c.innerHTML='<div class="empty"><div class="icon">📂</div><p>Aucune sauvegarde</p></div>';return}c.innerHTML=sv.map((s,i)=>'<div class="svi" onclick="ldT('+i+')"><div><h3>'+(s.d.fmt==='tct'?'🔄':'🏆')+' '+esc(s.nm)+'</h3><p>'+new Date(s.dt).toLocaleDateString('fr-FR')+' • '+(s.d.p?.filter(p=>p.trim()).length||0)+' joueurs</p></div><button class="btn btn-danger btn-sm" onclick="event.stopPropagation();delSv('+i+')">🗑️</button></div>').join('')}
+function ldT(i){const sv=JSON.parse(localStorage.getItem('tt_sv')||'[]');if(!sv[i])return;D=JSON.parse(JSON.stringify(sv[i].d));if(!D.scores)D.scores={};if(!D.p||!D.p.length)D.p=[''];document.getElementById('nbp').value=D.nbp||'auto';document.getElementById('nbq').value=D.nbq||2;document.getElementById(D.fmt==='tct'?'fmt-tct':'fmt-bkt').checked=true;if(D.ch)showPod();else if(D.pf?.t){D.pf.t==='bkt'?renBkt():renTCT();showPage('finale')}else if(D.pls?.length){renPls();showPage('poules')}else{renPL();showPage('saisie')}}
+function delSv(i){if(!confirm('Supprimer?'))return;const sv=JSON.parse(localStorage.getItem('tt_sv')||'[]');sv.splice(i,1);localStorage.setItem('tt_sv',JSON.stringify(sv));ldSv()}
+function clearSaves(){if(!confirm('Tout supprimer?'))return;localStorage.removeItem('tt_sv');ldSv()}
+function expRes(){let c='TOURNOI TENNIS DE TABLE\n'+new Date().toLocaleDateString('fr-FR')+'\n\n🏆 PODIUM\n1. '+(D.ch||'-')+'\n2. '+(D.se||'-')+'\n3. '+(D.th||'-')+'\n4. '+(D.fo||'-')+'\n\nPOULES\n';D.pls.forEach((pl,pi)=>{c+='\nPoule '+String.fromCharCode(65+pi)+':\n';getCls(pi).forEach((x,i)=>c+=(i+1)+'. '+x.n+' - '+x.pts+'pts\n')});const b=new Blob([c],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='tournoi.txt';a.click()}
+function shuf(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]]}return r}
+function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):''}
+function escJ(s){return s?s.replace(/\\/g,'\\\\').replace(/'/g,"\\'"):''}
+</script>
+</body>
+</html>

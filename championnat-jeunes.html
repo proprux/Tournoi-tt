@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>🏓 Championnat Jeunes TT</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--p:#e65100;--pl:#ff9800;--a:#1976d2;--s:#2e7d32;--w:#f9a825;--d:#c62828;--bg:#fff8f0;--c:#fff;--t:#1a1a2e;--tl:#64748b;--b:#e2e8f0;--sh:0 4px 24px rgba(230,81,0,.15);--r:16px;--rs:10px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Outfit,-apple-system,sans-serif;background:var(--bg);min-height:100vh;color:var(--t)}
+.app{max-width:1000px;margin:0 auto;padding:16px}
+header{text-align:center;padding:24px 0 20px}
+header h1{font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--p),var(--pl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+header p{color:var(--tl);font-size:.95rem}
+.hidden{display:none!important}
+.card{background:var(--c);border-radius:var(--r);box-shadow:var(--sh);padding:24px;margin-bottom:20px}
+.card-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid var(--b)}
+.card-header .icon{font-size:1.8rem}
+.card-header h2{font-size:1.3rem;font-weight:700;color:var(--p)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;border:none;border-radius:var(--rs);font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;transition:.2s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,var(--p),var(--pl));color:#fff}
+.btn-accent{background:linear-gradient(135deg,var(--a),#42a5f5);color:#fff}
+.btn-success{background:linear-gradient(135deg,var(--s),#43a047);color:#fff}
+.btn-danger{background:linear-gradient(135deg,var(--d),#e53935);color:#fff}
+.btn-outline{background:0;border:2px solid var(--b);color:var(--t)}
+.btn-info{background:linear-gradient(135deg,#0288d1,#03a9f4);color:#fff}
+.btn-purple{background:linear-gradient(135deg,#7b1fa2,#9c27b0);color:#fff}
+.btn-orange{background:linear-gradient(135deg,#ef6c00,#ff9800);color:#fff}
+.btn-sm{padding:10px 18px;font-size:.9rem}
+.btn-group{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.menu-card{background:var(--c);border-radius:var(--r);box-shadow:var(--sh);padding:32px 24px;text-align:center;cursor:pointer;transition:.3s;border:3px solid transparent}
+.menu-card:hover{transform:translateY(-4px);border-color:var(--pl)}
+.menu-card .icon{font-size:3.5rem;margin-bottom:16px;display:block}
+.menu-card .title{font-size:1.25rem;font-weight:700;color:var(--p)}
+.menu-card .desc{font-size:.9rem;color:var(--tl);margin-top:8px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-weight:600;margin-bottom:8px}
+.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+input,select,textarea{width:100%;padding:14px 16px;border:2px solid var(--b);border-radius:var(--rs);font-family:inherit;font-size:1rem;transition:.2s;background:#fff}
+input:focus,select:focus{outline:none;border-color:var(--p)}
+.team-card{background:var(--c);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:20px}
+.team-header{background:linear-gradient(135deg,var(--p),var(--pl));color:#fff;padding:16px 20px;font-weight:700;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.team-header input{background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.3);color:#fff;padding:8px 12px;border-radius:8px;font-weight:600;width:200px}
+.team-header input::placeholder{color:rgba(255,255,255,.7)}
+.team-header select{background:rgba(255,255,255,.9);border:2px solid rgba(255,255,255,.5);color:var(--p);padding:8px 12px;border-radius:8px;font-weight:600;width:220px}
+.team-body{padding:16px}
+.player-row{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.player-row .num{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:var(--p);color:#fff;border-radius:50%;font-weight:700;font-size:.85rem}
+.player-row input{flex:1;cursor:pointer}
+.player-row input.has-import{background:#fff3e0}
+.player-row .player-info{display:flex;flex-direction:column;align-items:flex-end;font-size:.75rem;color:var(--tl);min-width:100px}
+.player-row .player-info .licence{font-weight:600}
+.player-row .player-info .cat{color:var(--p)}
+.double-section{margin-top:16px;padding:16px;background:#fff3e0;border-radius:var(--rs);border:2px solid var(--pl)}
+.double-section label{display:block;font-weight:600;margin-bottom:10px;color:var(--p)}
+.double-select-row{display:flex;gap:10px;align-items:center}
+.double-select-row select{flex:1;padding:10px 12px}
+.double-select-row .sep{font-weight:700;color:var(--p)}
+.match-card{background:var(--c);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:16px}
+.match-header{background:linear-gradient(135deg,var(--a),#42a5f5);color:#fff;padding:12px 16px;font-weight:700;text-align:center}
+.match-header.final{background:linear-gradient(135deg,#ffd700,#ffb300);color:#333}
+.match-header.small-final{background:linear-gradient(135deg,#cd7f32,#a0522d);color:#fff}
+.match-body{padding:16px}
+.match-teams{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding:12px;background:var(--bg);border-radius:var(--rs)}
+.match-team{text-align:center;flex:1}
+.match-team-name{font-weight:700;font-size:1.1rem;color:var(--p)}
+.match-vs{font-weight:800;color:var(--tl);padding:0 16px}
+.match-score-total{display:flex;justify-content:center;align-items:center;gap:20px;padding:16px;background:#e3f2fd;border-radius:var(--rs);margin-bottom:16px}
+.match-score-total .score{font-size:2.5rem;font-weight:800;color:var(--a)}
+.match-score-total .sep{font-size:2rem;color:var(--tl)}
+.match-score-total .score.winner{color:var(--s)}
+.match-score-total .score.loser{color:var(--d);opacity:.6}
+.game-row{display:flex;align-items:center;gap:8px;padding:12px;background:var(--bg);border-radius:var(--rs);margin-bottom:8px}
+.game-row.double{background:#fff3e0;border:2px solid var(--pl)}
+.game-num{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--a);color:#fff;border-radius:50%;font-weight:700;font-size:.8rem}
+.game-row.double .game-num{background:var(--p)}
+.game-players{flex:1;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.game-player{flex:1;text-align:center;font-weight:500;font-size:.9rem;padding:8px;background:#fff;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:.2s}
+.game-player:hover{border-color:var(--a);background:#e3f2fd}
+.game-player.win{background:linear-gradient(135deg,var(--s),#43a047);color:#fff;border-color:var(--s)}
+.game-player.lose{background:#ffebee;color:var(--d);opacity:.7}
+.game-vs{font-weight:700;color:var(--tl);font-size:.85rem}
+.game-detail button{background:none;border:none;color:var(--a);cursor:pointer;font-size:.8rem}
+.game-score{font-size:.8rem;color:var(--s);font-weight:600;background:#e8f5e9;padding:2px 8px;border-radius:10px;margin-left:8px}
+.podium{display:flex;justify-content:center;align-items:flex-end;gap:16px;margin:40px 0;flex-wrap:wrap}
+.podium-place{text-align:center}
+.podium-box{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;border-radius:12px 12px 0 0;padding:20px 15px;color:#fff;font-weight:700}
+.podium-place.p1 .podium-box{background:linear-gradient(180deg,#ffd700,#ffb300);height:160px;width:140px}
+.podium-place.p2 .podium-box{background:linear-gradient(180deg,#c0c0c0,#9e9e9e);height:120px;width:120px}
+.podium-place.p3 .podium-box{background:linear-gradient(180deg,#cd7f32,#a0522d);height:90px;width:120px}
+.podium-place.p4 .podium-box{background:linear-gradient(180deg,#78909c,#546e7a);height:70px;width:100px}
+.podium-medal{font-size:2.5rem;margin-bottom:8px}
+.podium-name{font-size:1rem;word-break:break-word;max-width:120px}
+.podium-rank{font-size:1.5rem;margin-top:8px}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modal-content{background:#fff;border-radius:var(--r);max-width:600px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:2px solid var(--b);background:linear-gradient(135deg,var(--p),var(--pl));color:#fff;border-radius:var(--r) var(--r) 0 0}
+.modal-header h3{font-size:1.2rem;font-weight:700}
+.modal-close{background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
+.modal-body{padding:24px}
+.modal-footer{padding:16px 24px;border-top:2px solid var(--b);display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap}
+.sets-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:20px}
+.set-col{text-align:center}
+.set-col .set-label{font-size:.85rem;font-weight:600;color:var(--tl);margin-bottom:8px}
+.set-col input{width:100%;padding:12px 4px;text-align:center;font-size:1.1rem;font-weight:700;border:2px solid var(--b);border-radius:8px}
+.set-col input.win{background:#c8e6c9;border-color:var(--s)}
+.set-col input.lose{background:#ffcdd2;border-color:var(--d)}
+.score-summary{display:flex;justify-content:center;align-items:center;gap:20px;padding:16px;background:var(--bg);border-radius:var(--rs)}
+.score-summary .total{text-align:center}
+.score-summary .total .label{font-size:.9rem;color:var(--tl)}
+.score-summary .total .value{font-size:2rem;font-weight:800}
+.score-summary .total.winner .value{color:var(--s)}
+.score-summary .sep{font-size:1.5rem;color:var(--tl)}
+.quick-btns{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.quick-btns button{padding:8px 16px;border:2px solid var(--b);background:#fff;border-radius:8px;cursor:pointer;font-weight:600}
+.quick-btns button:hover{border-color:var(--p);background:#fff3e0}
+.info-box{padding:16px;background:#e3f2fd;border-radius:var(--rs);border-left:4px solid var(--a);margin-bottom:16px}
+.info-box.warning{background:#fff8e1;border-left-color:var(--w)}
+.info-box.success{background:#e8f5e9;border-left-color:var(--s)}
+.info-box.error{background:#ffebee;border-left-color:var(--d)}
+.nb-teams-selector{display:flex;gap:12px;justify-content:center;margin:20px 0}
+.nb-teams-opt{padding:20px 30px;border:3px solid var(--b);border-radius:var(--rs);cursor:pointer;text-align:center;background:#fff}
+.nb-teams-opt.selected{border-color:var(--p);background:#fff3e0}
+.nb-teams-opt .num{font-size:2rem;font-weight:800;color:var(--p)}
+.nb-teams-opt .label{font-size:.9rem;color:var(--tl)}
+.cat-selector{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.cat-opt{padding:12px 20px;border:2px solid var(--b);border-radius:var(--rs);cursor:pointer;font-weight:600;background:#fff}
+.cat-opt.selected{border-color:var(--p);background:#fff3e0;color:var(--p)}
+.journee-selector{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.journee-opt{width:50px;height:50px;display:flex;align-items:center;justify-content:center;border:2px solid var(--b);border-radius:var(--rs);cursor:pointer;font-weight:700;font-size:1.1rem;background:#fff}
+.journee-opt.selected{border-color:var(--p);background:var(--p);color:#fff}
+.dz{border:3px dashed var(--b);border-radius:var(--r);padding:30px;text-align:center;cursor:pointer;margin-bottom:16px}
+.dz.dov{border-color:var(--p);background:#fff3e0}
+.dz .icon{font-size:2.5rem;margin-bottom:8px;color:var(--tl)}
+.dz p{color:var(--tl);margin:0}
+.joueurs-list{max-height:300px;overflow-y:auto;border:2px solid var(--b);border-radius:var(--rs);margin-top:16px}
+.joueur-item{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--b);cursor:pointer}
+.joueur-item:last-child{border-bottom:none}
+.joueur-item:hover{background:#fff3e0}
+.joueur-item.disabled{opacity:.4;cursor:not-allowed;background:#f5f5f5}
+.joueur-item .licence{font-size:.8rem;color:var(--tl);width:70px}
+.joueur-item .nom{font-weight:600;flex:1}
+.joueur-item .cat-badge{font-size:.75rem;padding:2px 8px;border-radius:10px;background:var(--p);color:#fff;margin-left:8px}
+.clubs-summary{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.club-badge{padding:6px 12px;background:#e3f2fd;border-radius:20px;font-size:.85rem;color:var(--a);font-weight:600}
+.club-badge span{color:var(--tl);font-weight:400}
+.champ-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;padding:16px;background:linear-gradient(135deg,var(--p),var(--pl));color:#fff;border-radius:var(--rs);margin-bottom:20px}
+.champ-info-item{text-align:center}
+.champ-info-item .label{font-size:.8rem;opacity:.8}
+.champ-info-item .value{font-weight:700}
+.filter-info{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.filter-badge{padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:600}
+.filter-badge.club{background:#e3f2fd;color:var(--a)}
+.filter-badge.cat{background:#fff3e0;color:var(--p)}
+.no-players-msg{padding:20px;text-align:center;color:var(--tl)}
+.export-preview{background:#f5f5f5;border:1px solid var(--b);border-radius:var(--rs);padding:16px;font-family:monospace;font-size:.75rem;white-space:pre-wrap;max-height:200px;overflow-y:auto;margin-bottom:16px}
+.export-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:640px){.app{padding:12px}header h1{font-size:1.6rem}.card{padding:16px}.btn{padding:12px 16px;font-size:.9rem}.game-players{flex-direction:column;gap:4px}.game-player{width:100%}.form-row{grid-template-columns:1fr}.double-select-row{flex-direction:column}.double-select-row .sep{display:none}.export-actions{grid-template-columns:1fr}}
+@media print{body{background:#fff!important}.app,.modal,.btn-group{display:none!important}#print-area{display:block!important;padding:20px}}
+#print-area{display:none}
+</style>
+</head>
+<body>
+<div class="app">
+<header><h1>🏓 Championnat Jeunes</h1><p>Tennis de Table - Rencontres par équipes</p></header>
+<div id="pg-menu"><div class="menu-grid">
+<div class="menu-card" onclick="newChampionnat()"><span class="icon">🆕</span><div class="title">Nouveau championnat</div><div class="desc">Créer un nouveau championnat jeunes</div></div>
+<div class="menu-card" onclick="showPage('saves')"><span class="icon">📂</span><div class="title">Charger</div><div class="desc">Reprendre un championnat</div></div>
+<div class="menu-card" onclick="goToTournoi()"><span class="icon">🏆</span><div class="title">Tournoi classique</div><div class="desc">Retour au tournoi individuel</div></div>
+</div></div>
+<div id="pg-saves" class="hidden"><div class="btn-group"><button class="btn btn-outline" onclick="showPage('menu')">← Retour</button><button class="btn btn-danger btn-sm" onclick="clearSaves()">🗑️ Tout supprimer</button></div><div class="card"><div class="card-header"><span class="icon">📂</span><h2>Sauvegardes</h2></div><div id="saves-list"></div></div></div>
+<div id="pg-config" class="hidden">
+<div class="btn-group"><button class="btn btn-outline" onclick="showPage('menu')">← Menu</button><button class="btn btn-success" onclick="goToTeams()">Définir les équipes →</button></div>
+<div class="card"><div class="card-header"><span class="icon">📄</span><h2>1. Import de joueurs</h2></div>
+<div class="info-box warning"><p><strong>Format :</strong> licence;nom;prenom;point;Num club;Nom club;categorie</p></div>
+<div class="dz" id="dz-import"><div class="icon">📄</div><p><strong>Glissez un fichier</strong> ou cliquez</p></div>
+<input type="file" id="file-import" accept=".txt,.csv" style="display:none">
+<div id="import-status"></div>
+<div id="clubs-list"></div>
+<div style="margin-top:16px;padding-top:16px;border-top:2px solid var(--b)">
+<button class="btn btn-accent btn-sm" onclick="openAddPlayerModal()">➕ Ajouter un joueur manuellement</button>
+</div>
+</div>
+<div class="card"><div class="card-header"><span class="icon">📋</span><h2>2. Informations du championnat</h2></div>
+<div class="form-row"><div class="form-group"><label>📅 Date</label><input type="date" id="cfg-date"></div><div class="form-group"><label>🏠 Club recevant</label><select id="cfg-club"><option value="">-- Importer les joueurs --</option></select></div></div>
+<div class="form-row"><div class="form-group"><label>🏟️ Lieu</label><input type="text" id="cfg-lieu" placeholder="Rempli auto"></div><div class="form-group"><label>🏅 Division</label><select id="cfg-division"><option value="">-- Sélectionner --</option><option value="D1">Division 1</option><option value="D2">Division 2</option><option value="D3">Division 3</option><option value="D4">Division 4</option><option value="D5">Division 5</option><option value="D6">Division 6</option><option value="D7">Division 7</option><option value="D8">Division 8</option><option value="D9">Division 9</option><option value="D10">Division 10</option></select></div></div>
+<div class="form-group"><label>📆 Journée</label><div class="journee-selector" id="journee-selector"></div></div>
+<div class="form-group"><label>👥 Catégorie</label><div class="cat-selector" id="cat-selector"></div></div>
+</div>
+<div class="card"><div class="card-header"><span class="icon">⚙️</span><h2>3. Configuration</h2></div>
+<div class="info-box"><p><strong>Format :</strong> 3 joueurs/équipe, 7 matchs/rencontre (6 simples + 1 double)</p></div>
+<div class="form-group"><label>Nombre d'équipes</label><div class="nb-teams-selector" id="nb-teams-selector"></div></div>
+</div>
+</div>
+<div id="pg-teams" class="hidden"><div class="btn-group"><button class="btn btn-outline" onclick="showPage('config')">← Config</button><button class="btn btn-success" onclick="startChampionnat()">Commencer →</button></div><div id="champ-info-display"></div><div id="teams-container"></div></div>
+<div id="pg-semis" class="hidden"><div class="btn-group"><button class="btn btn-outline" onclick="showPage('teams')">← Équipes</button><button class="btn btn-purple" onclick="printMatchSheets()">🏓 Feuilles</button><button class="btn btn-accent" onclick="saveChamp()">💾 Sauver</button><button class="btn btn-success" id="btn-finals" onclick="goToFinals()">Finales →</button></div><div id="champ-info-display2"></div><div id="semis-container"></div></div>
+<div id="pg-finals" class="hidden"><div class="btn-group"><button class="btn btn-outline" onclick="showPage('semis')">← Matchs</button><button class="btn btn-purple" onclick="printMatchSheets()">🏓 Feuilles</button><button class="btn btn-accent" onclick="saveChamp()">💾 Sauver</button></div><div id="champ-info-display3"></div><div id="finals-container"></div></div>
+<div id="pg-podium" class="hidden"><div class="btn-group"><button class="btn btn-outline" onclick="showPage('menu')">← Menu</button><button class="btn btn-info" onclick="printPodium()">🖨️ Imprimer</button><button class="btn btn-orange" onclick="openExportModal()">📤 Exporter</button></div><div class="card"><div style="text-align:center;padding:20px"><h2 style="font-size:2rem;margin-bottom:12px">🏆 Championnat Terminé !</h2><div class="podium" id="podium-display"></div></div></div></div>
+</div>
+<div id="modal-score" class="modal"><div class="modal-content"><div class="modal-header"><h3>🏓 Score du match</h3><button class="modal-close" onclick="closeScoreModal()">×</button></div><div class="modal-body">
+<div style="text-align:center;margin-bottom:20px"><div style="display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap"><div style="font-weight:700;padding:10px 16px;background:#e3f2fd;border-radius:8px" id="modal-p1">J1</div><div style="font-weight:700;color:var(--tl)">VS</div><div style="font-weight:700;padding:10px 16px;background:#fff3e0;border-radius:8px" id="modal-p2">J2</div></div></div>
+<div class="sets-grid"><div class="set-col"><div class="set-label">Set 1</div><input type="number" id="ms1p1" min="0" max="99"><input type="number" id="ms1p2" min="0" max="99" style="margin-top:8px"></div><div class="set-col"><div class="set-label">Set 2</div><input type="number" id="ms2p1" min="0" max="99"><input type="number" id="ms2p2" min="0" max="99" style="margin-top:8px"></div><div class="set-col"><div class="set-label">Set 3</div><input type="number" id="ms3p1" min="0" max="99"><input type="number" id="ms3p2" min="0" max="99" style="margin-top:8px"></div><div class="set-col"><div class="set-label">Set 4</div><input type="number" id="ms4p1" min="0" max="99"><input type="number" id="ms4p2" min="0" max="99" style="margin-top:8px"></div><div class="set-col"><div class="set-label">Set 5</div><input type="number" id="ms5p1" min="0" max="99"><input type="number" id="ms5p2" min="0" max="99" style="margin-top:8px"></div></div>
+<div class="score-summary"><div class="total" id="modal-sum1"><div class="label" id="modal-sum1-name">J1</div><div class="value" id="modal-sum1-val">0</div></div><div class="sep">-</div><div class="total" id="modal-sum2"><div class="label" id="modal-sum2-name">J2</div><div class="value" id="modal-sum2-val">0</div></div></div>
+<div class="quick-btns"><button onclick="quickScore(3,0)">3-0</button><button onclick="quickScore(3,1)">3-1</button><button onclick="quickScore(3,2)">3-2</button><button onclick="quickScore(2,3)">2-3</button><button onclick="quickScore(1,3)">1-3</button><button onclick="quickScore(0,3)">0-3</button></div>
+</div><div class="modal-footer"><button class="btn btn-outline" onclick="closeScoreModal()">Annuler</button><button class="btn btn-success" onclick="saveScore()">Valider</button></div></div></div>
+<div id="modal-joueur" class="modal"><div class="modal-content"><div class="modal-header"><h3>👤 Sélectionner un joueur</h3><button class="modal-close" onclick="closeJoueurModal()">×</button></div><div class="modal-body">
+<div id="modal-filter-info" style="margin-bottom:12px;padding:12px;background:var(--bg);border-radius:var(--rs)"></div>
+<input type="text" id="search-joueur" placeholder="🔍 Rechercher...">
+<div id="joueurs-list-modal" class="joueurs-list" style="margin-top:16px;max-height:400px"></div>
+</div></div></div>
+<div id="modal-export" class="modal"><div class="modal-content"><div class="modal-header"><h3>📤 Exporter les résultats</h3><button class="modal-close" onclick="closeExportModal()">×</button></div><div class="modal-body">
+<div class="info-box success"><p>✅ Récapitulatif prêt pour le comité</p></div>
+<div class="form-group"><label>📧 Email du comité</label><input type="email" id="export-email" placeholder="comite@fftt.fr"></div>
+<div class="form-group"><label>📝 Aperçu</label><div class="export-preview" id="export-preview"></div></div>
+<div class="export-actions">
+<button class="btn btn-accent" onclick="downloadExport('txt')">📄 TXT</button>
+<button class="btn btn-success" onclick="downloadExport('csv')">📊 CSV</button>
+<button class="btn btn-info" onclick="sendByEmail()">📧 Email</button>
+<button class="btn btn-outline" onclick="copyExport()">📋 Copier</button>
+</div>
+</div></div></div>
+<div id="modal-add-player" class="modal"><div class="modal-content"><div class="modal-header"><h3>➕ Ajouter un joueur</h3><button class="modal-close" onclick="closeAddPlayerModal()">×</button></div><div class="modal-body">
+<div class="info-box"><p>Ajoutez un joueur de dernière minute</p></div>
+<div class="form-row">
+<div class="form-group"><label>N° Licence</label><input type="text" id="add-licence" placeholder="Ex: 123456"></div>
+<div class="form-group"><label>Catégorie</label><select id="add-categorie"><option value="">-- Sélectionner --</option><option value="B1">B1 - Benjamins 1</option><option value="B2">B2 - Benjamins 2</option><option value="M1">M1 - Minimes 1</option><option value="M2">M2 - Minimes 2</option><option value="C1">C1 - Cadets 1</option><option value="C2">C2 - Cadets 2</option><option value="J1">J1 - Juniors 1</option><option value="J2">J2 - Juniors 2</option><option value="J3">J3 - Juniors 3</option><option value="J4">J4 - Juniors 4</option></select></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Nom</label><input type="text" id="add-nom" placeholder="NOM"></div>
+<div class="form-group"><label>Prénom</label><input type="text" id="add-prenom" placeholder="Prénom"></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Points</label><input type="text" id="add-points" placeholder="Ex: 500"></div>
+<div class="form-group"><label>Club</label><select id="add-club"><option value="">-- Sélectionner ou saisir --</option></select><input type="text" id="add-club-new" placeholder="Ou nouveau club..." style="margin-top:8px"></div>
+</div>
+</div><div class="modal-footer"><button class="btn btn-outline" onclick="closeAddPlayerModal()">Annuler</button><button class="btn btn-success" onclick="addPlayerManual()">✅ Ajouter</button></div></div></div>
+<div id="print-area"></div>
+</div>
+<script>
+var D={info:{date:'',journee:1,categorie:'',clubRecevant:'',division:'',lieu:''},nbTeams:4,teams:[],joueurs:[],clubs:[],rencontres:[],phase:'semis',rankings:[]};
+var currentGame=null,currentPlayer=null;
+var CAT_MAP={'Benjamins':['B1','B2'],'Minimes':['M1','M2'],'Cadets':['C1','C2'],'Juniors':['J1','J2','J3','J4']};
+
+function esc(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function init(){
+  var h='';for(var i=1;i<=7;i++)h+='<div class="journee-opt'+(i===1?' selected':'')+'" onclick="selJournee('+i+')">J'+i+'</div>';
+  document.getElementById('journee-selector').innerHTML=h;
+  var cats=['Benjamins','Minimes','Cadets','Juniors'];
+  document.getElementById('cat-selector').innerHTML=cats.map(function(c){return '<div class="cat-opt" onclick="selCat(\''+c+'\')">'+c+'</div>';}).join('');
+  document.getElementById('nb-teams-selector').innerHTML=[2,3,4].map(function(n){return '<div class="nb-teams-opt'+(n===4?' selected':'')+'" onclick="selNbTeams('+n+')"><div class="num">'+n+'</div><div class="label">équipes</div></div>';}).join('');
+  document.getElementById('cfg-date').value=new Date().toISOString().split('T')[0];
+  var dz=document.getElementById('dz-import');
+  dz.onclick=function(){document.getElementById('file-import').click();};
+  dz.ondragover=function(e){e.preventDefault();dz.classList.add('dov');};
+  dz.ondragleave=function(){dz.classList.remove('dov');};
+  dz.ondrop=function(e){e.preventDefault();dz.classList.remove('dov');if(e.dataTransfer.files[0])importFile(e.dataTransfer.files[0]);};
+  document.getElementById('file-import').onchange=function(e){if(e.target.files[0])importFile(e.target.files[0]);e.target.value='';};
+  document.getElementById('cfg-club').onchange=function(){D.info.clubRecevant=this.value;D.info.lieu=this.value;document.getElementById('cfg-lieu').value=this.value;};
+  document.getElementById('cfg-lieu').onchange=function(){D.info.lieu=this.value;};
+  document.getElementById('cfg-date').onchange=function(){D.info.date=this.value;};
+  document.getElementById('cfg-division').onchange=function(){D.info.division=this.value;};
+  document.getElementById('search-joueur').oninput=renderJoueursList;
+  for(var j=1;j<=5;j++){document.getElementById('ms'+j+'p1').oninput=updateScoreSum;document.getElementById('ms'+j+'p2').oninput=updateScoreSum;}
+  showPage('menu');
+}
+
+function showPage(p){
+  ['menu','saves','config','teams','semis','finals','podium'].forEach(function(x){document.getElementById('pg-'+x).classList.add('hidden');});
+  document.getElementById('pg-'+p).classList.remove('hidden');
+  if(p==='saves')loadSaves();
+  if(p==='config')renderConfig();
+  if(p==='teams')renderTeams();
+  if(p==='semis')renderSemis();
+  if(p==='finals')renderFinals();
+  if(p==='podium')renderPodium();
+}
+
+function newChampionnat(){
+  D={info:{date:new Date().toISOString().split('T')[0],journee:1,categorie:'',clubRecevant:'',division:'',lieu:''},nbTeams:4,teams:[],joueurs:[],clubs:[],rencontres:[],phase:'semis',rankings:[]};
+  showPage('config');
+}
+
+function goToTournoi(){window.location.href='tournoi-tennis.html';}
+
+function selJournee(j){D.info.journee=j;document.querySelectorAll('.journee-opt').forEach(function(el,i){el.classList.toggle('selected',i+1===j);});}
+function selCat(c){D.info.categorie=c;document.querySelectorAll('.cat-opt').forEach(function(el){el.classList.toggle('selected',el.textContent===c);});}
+function selNbTeams(n){D.nbTeams=n;document.querySelectorAll('.nb-teams-opt').forEach(function(el){el.classList.toggle('selected',el.querySelector('.num').textContent==n);});}
+
+function importFile(file){
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var lines=e.target.result.split(/[\r\n]+/).filter(function(l){return l.trim();});
+    D.joueurs=[];var seen={};
+    lines.forEach(function(line,i){
+      if(i===0&&line.toLowerCase().indexOf('licence')>=0)return;
+      var p=line.indexOf(';')>=0?line.split(';'):line.split(',');
+      if(p.length>=3){
+        var lic=p[0].trim();if(seen[lic])return;seen[lic]=1;
+        D.joueurs.push({licence:lic,nom:p[1]||'',prenom:p[2]||'',points:p[3]||'',numClub:p[4]||'',nomClub:p[5]||'',categorie:p[6]||''});
+      }
+    });
+    var cm={};D.joueurs.forEach(function(j){if(j.numClub&&j.nomClub){if(!cm[j.numClub])cm[j.numClub]={num:j.numClub,nom:j.nomClub,count:0};cm[j.numClub].count++;}});
+    D.clubs=Object.values(cm).sort(function(a,b){return a.nom.localeCompare(b.nom);});
+    renderImport();
+  };
+  reader.readAsText(file);
+}
+
+function renderImport(){
+  var s=document.getElementById('import-status'),cl=document.getElementById('clubs-list');
+  if(!D.joueurs.length){s.innerHTML='<div class="info-box error">Aucun joueur</div>';cl.innerHTML='';return;}
+  s.innerHTML='<div class="info-box success">✅ '+D.joueurs.length+' joueurs de '+D.clubs.length+' clubs</div>';
+  cl.innerHTML='<div class="clubs-summary">'+D.clubs.map(function(c){return '<div class="club-badge">'+esc(c.nom)+' <span>('+c.count+')</span></div>';}).join('')+'</div>';
+  var sel=document.getElementById('cfg-club');
+  sel.innerHTML='<option value="">-- Sélectionner --</option>'+D.clubs.map(function(c){return '<option value="'+esc(c.nom)+'">'+esc(c.nom)+'</option>';}).join('');
+}
+
+function renderConfig(){
+  document.getElementById('cfg-date').value=D.info.date||new Date().toISOString().split('T')[0];
+  document.getElementById('cfg-lieu').value=D.info.lieu||'';
+  document.getElementById('cfg-division').value=D.info.division||'';
+  document.getElementById('cfg-club').value=D.info.clubRecevant||'';
+  document.querySelectorAll('.journee-opt').forEach(function(el,i){el.classList.toggle('selected',i+1===D.info.journee);});
+  document.querySelectorAll('.cat-opt').forEach(function(el){el.classList.toggle('selected',el.textContent===D.info.categorie);});
+  document.querySelectorAll('.nb-teams-opt').forEach(function(el){el.classList.toggle('selected',el.querySelector('.num').textContent==D.nbTeams);});
+}
+
+function goToTeams(){
+  D.info.date=document.getElementById('cfg-date').value;
+  D.info.lieu=document.getElementById('cfg-lieu').value;
+  D.info.clubRecevant=document.getElementById('cfg-club').value;
+  D.info.division=document.getElementById('cfg-division').value;
+  var err=[];
+  if(!D.info.division)err.push('division');
+  if(!D.info.categorie)err.push('catégorie');
+  if(!D.info.clubRecevant)err.push('club recevant');
+  if(err.length){alert('⚠️ Veuillez sélectionner: '+err.join(', '));return;}
+  var cats=CAT_MAP[D.info.categorie]||[];
+  var clubsF=[];var cm={};
+  D.joueurs.forEach(function(j){if(cats.length===0||cats.indexOf(j.categorie)>=0){if(j.numClub&&j.nomClub){if(!cm[j.numClub])cm[j.numClub]={num:j.numClub,nom:j.nomClub,count:0};cm[j.numClub].count++;}}});
+  clubsF=Object.values(cm).sort(function(a,b){return a.nom.localeCompare(b.nom);});
+  if(D.teams.length!==D.nbTeams){
+    D.teams=[];
+    for(var i=0;i<D.nbTeams;i++){
+      var cl=clubsF[i]||null;
+      D.teams.push({name:cl?cl.nom:'Équipe '+(i+1),clubNum:cl?cl.num:'',players:[{nom:'',prenom:'',licence:'',categorie:''},{nom:'',prenom:'',licence:'',categorie:''},{nom:'',prenom:'',licence:'',categorie:''}],double:[0,1]});
+    }
+  }
+  showPage('teams');
+}
+
+function getPN(p){return typeof p==='string'?p:(p.nom&&p.prenom?p.nom+' '+p.prenom:p.nom||'');}
+
+function champInfo(){
+  var i=D.info,d=i.date?new Date(i.date).toLocaleDateString('fr-FR'):'-';
+  return '<div class="champ-info"><div class="champ-info-item"><div class="label">📅</div><div class="value">'+d+'</div></div><div class="champ-info-item"><div class="label">📆</div><div class="value">J'+i.journee+'</div></div><div class="champ-info-item"><div class="label">👥</div><div class="value">'+(i.categorie||'-')+'</div></div><div class="champ-info-item"><div class="label">🏅</div><div class="value">'+(i.division||'-')+'</div></div><div class="champ-info-item"><div class="label">🏠</div><div class="value">'+(i.clubRecevant||'-')+'</div></div></div>';
+}
+
+function renderTeams(){
+  document.getElementById('champ-info-display').innerHTML=champInfo();
+  var c=document.getElementById('teams-container'),hasI=D.joueurs.length>0;
+  var cats=CAT_MAP[D.info.categorie]||[],clubsF=[];
+  var cm={};D.joueurs.forEach(function(j){if(cats.length===0||cats.indexOf(j.categorie)>=0){if(j.numClub&&j.nomClub){if(!cm[j.numClub])cm[j.numClub]={num:j.numClub,nom:j.nomClub,count:0};cm[j.numClub].count++;}}});
+  clubsF=Object.values(cm).sort(function(a,b){return a.nom.localeCompare(b.nom);});
+  var h='';
+  D.teams.forEach(function(t,ti){
+    if(!t.double)t.double=[0,1];
+    var cs='';
+    if(clubsF.length>0){cs='<select onchange="chgClub('+ti+',this.value)"><option value="">-- Club --</option>'+clubsF.map(function(cl){return '<option value="'+esc(cl.num)+'"'+(t.clubNum===cl.num?' selected':'')+'>'+esc(cl.nom)+' ('+cl.count+')</option>';}).join('')+'</select>';}
+    var po='';t.players.forEach(function(p,pi){po+='<option value="'+pi+'">'+(getPN(p)||'J'+(pi+1))+'</option>';});
+    var pl='';t.players.forEach(function(p,pi){pl+='<div class="player-row"><div class="num">J'+(pi+1)+'</div><input type="text" value="'+esc(getPN(p))+'" '+(hasI?'onclick="openJM('+ti+','+pi+')" readonly':'onchange="chgPN('+ti+','+pi+',this.value)"')+' class="'+(hasI?'has-import':'')+'">'+(p.licence?'<div class="player-info"><span class="licence">'+p.licence+'</span><span class="cat">'+p.categorie+'</span></div>':'')+'</div>';});
+    var o1=po.replace('value="'+t.double[0]+'"','value="'+t.double[0]+'" selected');
+    var o2=po.replace('value="'+t.double[1]+'"','value="'+t.double[1]+'" selected');
+    h+='<div class="team-card"><div class="team-header"><input type="text" value="'+esc(t.name)+'" onchange="D.teams['+ti+'].name=this.value">'+(cs||'')+'</div><div class="team-body">'+pl+'<div class="double-section"><label>🏓 Double</label><div class="double-select-row"><select onchange="D.teams['+ti+'].double[0]=+this.value;renderTeams()">'+o1+'</select><span class="sep">+</span><select onchange="D.teams['+ti+'].double[1]=+this.value;renderTeams()">'+o2+'</select></div></div></div></div>';
+  });
+  c.innerHTML=h;
+}
+
+function chgClub(ti,num){
+  D.teams[ti].clubNum=num;
+  var cl=D.clubs.find(function(c){return c.num===num;});
+  if(cl)D.teams[ti].name=cl.nom;
+  D.teams[ti].players=[{nom:'',prenom:'',licence:'',categorie:''},{nom:'',prenom:'',licence:'',categorie:''},{nom:'',prenom:'',licence:'',categorie:''}];
+  D.teams[ti].double=[0,1];
+  renderTeams();
+}
+
+function chgPN(ti,pi,v){var p=v.split(' ');D.teams[ti].players[pi]={nom:p[0]||'',prenom:p.slice(1).join(' ')||'',licence:'',categorie:''};renderTeams();}
+
+function openJM(ti,pi){
+  if(!D.joueurs.length)return;
+  currentPlayer={ti:ti,pi:pi};
+  var t=D.teams[ti],cats=CAT_MAP[D.info.categorie]||[];
+  var cl=D.clubs.find(function(c){return c.num===t.clubNum;});
+  var cnt=D.joueurs.filter(function(j){return(!t.clubNum||j.numClub===t.clubNum)&&(cats.length===0||cats.indexOf(j.categorie)>=0);}).length;
+  var fi='<div class="filter-info">';
+  if(cl)fi+='<span class="filter-badge club">'+esc(cl.nom)+'</span>';
+  if(D.info.categorie)fi+='<span class="filter-badge cat">'+D.info.categorie+'</span>';
+  fi+='<span style="color:var(--tl)">'+cnt+' joueur(s)</span></div>';
+  document.getElementById('modal-filter-info').innerHTML=fi;
+  document.getElementById('search-joueur').value='';
+  renderJoueursList();
+  document.getElementById('modal-joueur').classList.add('show');
+}
+
+function closeJoueurModal(){document.getElementById('modal-joueur').classList.remove('show');currentPlayer=null;}
+
+function renderJoueursList(){
+  var s=document.getElementById('search-joueur').value.toLowerCase();
+  var t=D.teams[currentPlayer.ti],cats=CAT_MAP[D.info.categorie]||[];
+  var sel={};D.teams.forEach(function(tm){tm.players.forEach(function(p){if(p.licence)sel[p.licence]=1;});});
+  var f=D.joueurs.filter(function(j){
+    if(t.clubNum&&j.numClub!==t.clubNum)return false;
+    if(cats.length>0&&cats.indexOf(j.categorie)<0)return false;
+    if(s&&j.nom.toLowerCase().indexOf(s)<0&&j.prenom.toLowerCase().indexOf(s)<0&&j.licence.indexOf(s)<0)return false;
+    return true;
+  }).sort(function(a,b){return(a.nom+a.prenom).localeCompare(b.nom+b.prenom);});
+  if(!f.length){document.getElementById('joueurs-list-modal').innerHTML='<div class="no-players-msg">Aucun joueur</div>';return;}
+  document.getElementById('joueurs-list-modal').innerHTML=f.map(function(j){
+    var dis=sel[j.licence];
+    return '<div class="joueur-item'+(dis?' disabled':'')+'" '+(dis?'':'onclick="selJ(\''+j.licence+'\')"')+'><span class="licence">'+j.licence+'</span><span class="nom">'+esc(j.nom)+' '+esc(j.prenom)+'</span>'+(j.categorie?'<span class="cat-badge">'+j.categorie+'</span>':'')+'</div>';
+  }).join('');
+}
+
+function selJ(lic){
+  var j=D.joueurs.find(function(x){return x.licence===lic;});
+  if(!j||!currentPlayer)return;
+  D.teams[currentPlayer.ti].players[currentPlayer.pi]={nom:j.nom,prenom:j.prenom,licence:j.licence,categorie:j.categorie};
+  closeJoueurModal();renderTeams();
+}
+
+function genGames(t1,t2){
+  var tm1=D.teams[t1],tm2=D.teams[t2];
+  var p1=tm1.players.map(getPN),p2=tm2.players.map(getPN);
+  var d1=tm1.double||[0,1],d2=tm2.double||[0,1];
+  return[
+    {p1:{t:t1,n:p1[0]},p2:{t:t2,n:p2[0]},w:null,sc:null,ty:'s'},
+    {p1:{t:t1,n:p1[1]},p2:{t:t2,n:p2[1]},w:null,sc:null,ty:'s'},
+    {p1:{t:t1,n:p1[2]},p2:{t:t2,n:p2[2]},w:null,sc:null,ty:'s'},
+    {p1:{t:t1,n:p1[0]},p2:{t:t2,n:p2[1]},w:null,sc:null,ty:'s'},
+    {p1:{t:t1,n:p1[1]},p2:{t:t2,n:p2[0]},w:null,sc:null,ty:'s'},
+    {p1:{t:t1,n:p1[2]},p2:{t:t2,n:p2[2]},w:null,sc:null,ty:'s'},
+    {p1:{t:t1,n:p1[d1[0]]+'/'+p1[d1[1]]},p2:{t:t2,n:p2[d2[0]]+'/'+p2[d2[1]]},w:null,sc:null,ty:'d'}
+  ];
+}
+
+function startChampionnat(){
+  for(var i=0;i<D.teams.length;i++){
+    var t=D.teams[i];
+    for(var j=0;j<3;j++)if(!getPN(t.players[j])){alert('Remplir tous les joueurs');return;}
+    if(t.double[0]===t.double[1]){alert('Double invalide: '+t.name);return;}
+  }
+  D.rencontres=[];
+  if(D.nbTeams===2){D.rencontres.push({t1:0,t2:1,games:genGames(0,1),w:null,phase:'final',label:'Finale'});D.phase='finals';showPage('finals');}
+  else if(D.nbTeams===3){D.rencontres.push({t1:0,t2:1,games:genGames(0,1),w:null,phase:'poule',label:'Match 1'});D.rencontres.push({t1:0,t2:2,games:genGames(0,2),w:null,phase:'poule',label:'Match 2'});D.rencontres.push({t1:1,t2:2,games:genGames(1,2),w:null,phase:'poule',label:'Match 3'});D.phase='semis';showPage('semis');}
+  else{D.rencontres.push({t1:0,t2:1,games:genGames(0,1),w:null,phase:'semi',label:'Demi 1'});D.rencontres.push({t1:2,t2:3,games:genGames(2,3),w:null,phase:'semi',label:'Demi 2'});D.phase='semis';showPage('semis');}
+}
+
+function renderSemis(){
+  document.getElementById('champ-info-display2').innerHTML=champInfo();
+  var ms=D.rencontres.filter(function(r){return r.phase==='semi'||r.phase==='poule';});
+  document.getElementById('semis-container').innerHTML=ms.map(function(r,i){return renderMatch(r,D.rencontres.indexOf(r));}).join('');
+  document.getElementById('btn-finals').style.display=ms.every(function(r){return r.w!==null;})?'inline-flex':'none';
+}
+
+function renderMatch(r,ri){
+  var t1=D.teams[r.t1],t2=D.teams[r.t2],s1=0,s2=0;
+  r.games.forEach(function(g){if(g.w===r.t1)s1++;else if(g.w===r.t2)s2++;});
+  if((s1>=4||s2>=4)&&r.w===null)r.w=s1>s2?r.t1:r.t2;
+  var gs=r.games.map(function(g,gi){
+    var p1w=g.w===g.p1.t,p2w=g.w===g.p2.t,sc=g.sc?g.sc.s1+'-'+g.sc.s2:'';
+    return '<div class="game-row '+(g.ty==='d'?'double':'')+'"><div class="game-num">'+(gi+1)+'</div><div class="game-players"><div class="game-player '+(p1w?'win':'')+(p2w?' lose':'')+'" onclick="setW('+ri+','+gi+',1)">'+esc(g.p1.n)+'</div><div class="game-vs">VS</div><div class="game-player '+(p2w?'win':'')+(p1w?' lose':'')+'" onclick="setW('+ri+','+gi+',2)">'+esc(g.p2.n)+'</div></div>'+(sc?'<span class="game-score">'+sc+'</span>':'')+'<div class="game-detail"><button onclick="openSM('+ri+','+gi+')">✏️</button></div></div>';
+  }).join('');
+  return '<div class="match-card"><div class="match-header '+(r.phase==='final'?'final':'')+(r.phase==='small-final'?'small-final':'')+'">'+r.label+'</div><div class="match-body"><div class="match-teams"><div class="match-team"><div class="match-team-name">'+esc(t1.name)+'</div></div><div class="match-vs">VS</div><div class="match-team"><div class="match-team-name">'+esc(t2.name)+'</div></div></div><div class="match-score-total"><div class="score '+(s1>s2?'winner':s2>s1?'loser':'')+'">'+s1+'</div><div class="sep">-</div><div class="score '+(s2>s1?'winner':s1>s2?'loser':'')+'">'+s2+'</div></div>'+gs+'</div></div>';
+}
+
+function setW(ri,gi,p){
+  var r=D.rencontres[ri],g=r.games[gi];
+  g.w=p===1?g.p1.t:g.p2.t;g.sc=p===1?{s1:3,s2:0}:{s1:0,s2:3};
+  chkMatch(ri);D.phase==='finals'?renderFinals():renderSemis();
+}
+
+function chkMatch(ri){
+  var r=D.rencontres[ri],s1=0,s2=0;
+  r.games.forEach(function(g){if(g.w===r.t1)s1++;else if(g.w===r.t2)s2++;});
+  r.w=s1>=4?r.t1:(s2>=4?r.t2:null);
+}
+
+function goToFinals(){
+  if(D.nbTeams===3){
+    var pts={};D.teams.forEach(function(t,i){pts[i]=0;});
+    D.rencontres.filter(function(r){return r.phase==='poule';}).forEach(function(r){if(r.w===r.t1)pts[r.t1]+=2;else if(r.w===r.t2)pts[r.t2]+=2;});
+    D.rankings=Object.entries(pts).sort(function(a,b){return b[1]-a[1];}).map(function(x){return parseInt(x[0]);});
+    showPage('podium');return;
+  }
+  var s1=D.rencontres.find(function(r){return r.label==='Demi 1';}),s2=D.rencontres.find(function(r){return r.label==='Demi 2';});
+  var w1=s1.w,l1=s1.w===s1.t1?s1.t2:s1.t1,w2=s2.w,l2=s2.w===s2.t1?s2.t2:s2.t1;
+  if(!D.rencontres.find(function(r){return r.phase==='final';}))D.rencontres.push({t1:w1,t2:w2,games:genGames(w1,w2),w:null,phase:'final',label:'Finale'});
+  if(!D.rencontres.find(function(r){return r.phase==='small-final';}))D.rencontres.push({t1:l1,t2:l2,games:genGames(l1,l2),w:null,phase:'small-final',label:'Petite finale'});
+  D.phase='finals';showPage('finals');
+}
+
+function renderFinals(){
+  document.getElementById('champ-info-display3').innerHTML=champInfo();
+  var fs=D.rencontres.filter(function(r){return r.phase==='final'||r.phase==='small-final';});
+  var h=fs.map(function(r){return renderMatch(r,D.rencontres.indexOf(r));}).join('');
+  if(fs.every(function(r){return r.w!==null;}))h+='<div style="text-align:center;margin-top:20px"><button class="btn btn-success" onclick="showPodiumPage()">🏆 Podium</button></div>';
+  document.getElementById('finals-container').innerHTML=h;
+}
+
+function showPodiumPage(){
+  if(D.nbTeams===2){var f=D.rencontres.find(function(r){return r.phase==='final';});D.rankings=[f.w,f.w===f.t1?f.t2:f.t1];}
+  else if(D.nbTeams===4){var f=D.rencontres.find(function(r){return r.phase==='final';}),pf=D.rencontres.find(function(r){return r.phase==='small-final';});D.rankings=[f.w,f.w===f.t1?f.t2:f.t1,pf.w,pf.w===pf.t1?pf.t2:pf.t1];}
+  showPage('podium');
+}
+
+function renderPodium(){
+  var m=['🥇','🥈','🥉','4'],o=D.rankings.length>=4?[1,0,2,3]:D.rankings.length===3?[1,0,2]:[1,0];
+  document.getElementById('podium-display').innerHTML=o.map(function(i){
+    var ti=D.rankings[i];if(ti===undefined)return'';
+    var t=D.teams[ti];return '<div class="podium-place p'+(i+1)+'"><div class="podium-box"><div class="podium-medal">'+m[i]+'</div><div class="podium-name">'+esc(t.name)+'</div><div class="podium-rank">'+(i+1)+'</div></div></div>';
+  }).join('');
+}
+
+function openSM(ri,gi){
+  currentGame={ri:ri,gi:gi};var g=D.rencontres[ri].games[gi];
+  document.getElementById('modal-p1').textContent=g.p1.n;
+  document.getElementById('modal-p2').textContent=g.p2.n;
+  document.getElementById('modal-sum1-name').textContent=g.p1.n.substring(0,8);
+  document.getElementById('modal-sum2-name').textContent=g.p2.n.substring(0,8);
+  for(var i=1;i<=5;i++){document.getElementById('ms'+i+'p1').value='';document.getElementById('ms'+i+'p2').value='';}
+  updateScoreSum();document.getElementById('modal-score').classList.add('show');
+}
+
+function closeScoreModal(){document.getElementById('modal-score').classList.remove('show');currentGame=null;}
+
+function updateScoreSum(){
+  var s1=0,s2=0;
+  for(var i=1;i<=5;i++){
+    var v1=parseInt(document.getElementById('ms'+i+'p1').value)||0,v2=parseInt(document.getElementById('ms'+i+'p2').value)||0;
+    var e1=document.getElementById('ms'+i+'p1'),e2=document.getElementById('ms'+i+'p2');
+    e1.classList.remove('win','lose');e2.classList.remove('win','lose');
+    if(v1||v2){if(v1>v2){s1++;e1.classList.add('win');e2.classList.add('lose');}else if(v2>v1){s2++;e2.classList.add('win');e1.classList.add('lose');}}
+  }
+  document.getElementById('modal-sum1-val').textContent=s1;
+  document.getElementById('modal-sum2-val').textContent=s2;
+  document.getElementById('modal-sum1').classList.toggle('winner',s1>=3);
+  document.getElementById('modal-sum2').classList.toggle('winner',s2>=3);
+}
+
+function quickScore(a,b){
+  for(var i=1;i<=5;i++){document.getElementById('ms'+i+'p1').value='';document.getElementById('ms'+i+'p2').value='';}
+  var c1=0,c2=0,idx=1;
+  while(c1<a||c2<b){if(c1<a){document.getElementById('ms'+idx+'p1').value=11;document.getElementById('ms'+idx+'p2').value=Math.floor(Math.random()*9);c1++;}else{document.getElementById('ms'+idx+'p1').value=Math.floor(Math.random()*9);document.getElementById('ms'+idx+'p2').value=11;c2++;}idx++;}
+  updateScoreSum();
+}
+
+function saveScore(){
+  if(!currentGame)return;var ri=currentGame.ri,gi=currentGame.gi,g=D.rencontres[ri].games[gi];
+  var s1=0,s2=0;
+  for(var i=1;i<=5;i++){var v1=parseInt(document.getElementById('ms'+i+'p1').value)||0,v2=parseInt(document.getElementById('ms'+i+'p2').value)||0;if(v1>v2)s1++;else if(v2>v1)s2++;}
+  if(s1>=3){g.w=g.p1.t;g.sc={s1:s1,s2:s2};}else if(s2>=3){g.w=g.p2.t;g.sc={s1:s1,s2:s2};}else{g.w=null;g.sc=null;}
+  chkMatch(ri);closeScoreModal();D.phase==='finals'?renderFinals():renderSemis();
+}
+
+function genExportTxt(){
+  var i=D.info,d=i.date?new Date(i.date).toLocaleDateString('fr-FR'):'';
+  var t='CHAMPIONNAT JEUNES - RESULTATS\n';
+  t+='================================\n';
+  t+='Date: '+d+' | Cat: '+i.categorie+' | Div: '+i.division+' | J'+i.journee+'\n';
+  t+='Club: '+i.clubRecevant+' | Lieu: '+i.lieu+'\n\n';
+  t+='EQUIPES:\n';
+  D.teams.forEach(function(tm,ti){t+=(ti+1)+'. '+tm.name+': '+tm.players.map(function(p){return getPN(p)+(p.licence?' ('+p.licence+')':'');}).join(', ')+'\n';});
+  t+='\nRESULTATS:\n';
+  D.rencontres.forEach(function(r){
+    var s1=0,s2=0;r.games.forEach(function(g){if(g.w===r.t1)s1++;else if(g.w===r.t2)s2++;});
+    t+=r.label+': '+D.teams[r.t1].name+' '+s1+'-'+s2+' '+D.teams[r.t2].name+'\n';
+    r.games.forEach(function(g,gi){var w=g.w===g.p1.t?g.p1.n:g.p2.n;t+='  '+(gi+1)+'. '+g.p1.n+' vs '+g.p2.n+' -> '+w+(g.sc?' ('+g.sc.s1+'-'+g.sc.s2+')':'')+'\n';});
+  });
+  t+='\nCLASSEMENT:\n';
+  D.rankings.forEach(function(ti,idx){t+=(idx+1)+'. '+D.teams[ti].name+'\n';});
+  return t;
+}
+
+function openExportModal(){document.getElementById('export-preview').textContent=genExportTxt();document.getElementById('modal-export').classList.add('show');}
+function closeExportModal(){document.getElementById('modal-export').classList.remove('show');}
+
+function downloadExport(fmt){
+  var c=fmt==='csv'?genExportTxt().replace(/\n/g,'\r\n'):genExportTxt();
+  var fn='Champ_'+D.info.categorie+'_J'+D.info.journee+'.'+(fmt==='csv'?'csv':'txt');
+  var b=new Blob([c],{type:'text/plain;charset=utf-8'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=fn;a.click();
+}
+
+function copyExport(){
+  navigator.clipboard.writeText(genExportTxt()).then(function(){alert('Copié !');});
+}
+
+function sendByEmail(){
+  var e=document.getElementById('export-email').value,s='Resultats Champ '+D.info.categorie+' J'+D.info.journee;
+  var b=genExportTxt();
+  if(b.length>1500){alert('Trop long pour email direct. Utilisez Copier ou Télécharger.');return;}
+  window.location.href='mailto:'+(e||'')+'?subject='+encodeURIComponent(s)+'&body='+encodeURIComponent(b);
+}
+
+function printMatchSheets(){
+  var h='',n=1;
+  D.rencontres.forEach(function(r){
+    r.games.forEach(function(g){
+      h+='<div style="page-break-after:always;border:2px solid #000;padding:20px;margin:10px"><h2 style="text-align:center">'+D.info.categorie+' - '+r.label+' - Match '+n+'</h2><div style="display:flex;justify-content:space-around;margin:20px 0"><div style="text-align:center;padding:20px;border:2px solid #000;flex:1;margin:0 10px"><b>'+esc(g.p1.n)+'</b></div><div style="padding:20px;font-size:2rem">VS</div><div style="text-align:center;padding:20px;border:2px solid #000;flex:1;margin:0 10px"><b>'+esc(g.p2.n)+'</b></div></div><table style="width:100%;border-collapse:collapse"><tr><th style="border:1px solid #000;padding:10px">Set 1</th><th style="border:1px solid #000;padding:10px">Set 2</th><th style="border:1px solid #000;padding:10px">Set 3</th><th style="border:1px solid #000;padding:10px">Set 4</th><th style="border:1px solid #000;padding:10px">Set 5</th></tr><tr><td style="border:1px solid #000;height:40px"></td><td style="border:1px solid #000"></td><td style="border:1px solid #000"></td><td style="border:1px solid #000"></td><td style="border:1px solid #000"></td></tr><tr><td style="border:1px solid #000;height:40px"></td><td style="border:1px solid #000"></td><td style="border:1px solid #000"></td><td style="border:1px solid #000"></td><td style="border:1px solid #000"></td></tr></table><p style="text-align:center;margin-top:20px">Vainqueur: ________________</p></div>';
+      n++;
+    });
+  });
+  doPrint(h);
+}
+
+function printPodium(){
+  var m=['🥇','🥈','🥉','4e'],h='<div style="text-align:center;padding:40px"><h1>🏓 '+D.info.categorie+' - J'+D.info.journee+'</h1><h2>'+D.info.division+' - '+D.info.clubRecevant+'</h2><table style="margin:40px auto;border-collapse:collapse">';
+  D.rankings.forEach(function(ti,i){h+='<tr style="background:'+(i===0?'#fff9c4':i===1?'#f5f5f5':i===2?'#ffe0b2':'#eee')+'"><td style="padding:20px;font-size:2rem">'+m[i]+'</td><td style="padding:20px;font-size:1.5rem;font-weight:bold">'+esc(D.teams[ti].name)+'</td></tr>';});
+  h+='</table></div>';doPrint(h);
+}
+
+function doPrint(h){document.getElementById('print-area').innerHTML=h;document.getElementById('print-area').style.display='block';setTimeout(function(){window.print();document.getElementById('print-area').style.display='none';},100);}
+
+function saveChamp(){
+  var n=prompt('Nom:','Champ '+D.info.categorie+' J'+D.info.journee);if(!n)return;
+  var sv=JSON.parse(localStorage.getItem('champ_jeunes')||'[]');
+  var idx=-1;for(var i=0;i<sv.length;i++)if(sv[i].name===n){idx=i;break;}
+  if(idx>=0&&!confirm('Remplacer?'))return;
+  var d={name:n,date:new Date().toISOString(),data:JSON.parse(JSON.stringify(D))};
+  if(idx>=0)sv[idx]=d;else sv.unshift(d);
+  localStorage.setItem('champ_jeunes',JSON.stringify(sv));alert('Sauvegardé!');
+}
+
+function loadSaves(){
+  var sv=JSON.parse(localStorage.getItem('champ_jeunes')||'[]'),c=document.getElementById('saves-list');
+  if(!sv.length){c.innerHTML='<div style="text-align:center;padding:40px;color:var(--tl)">Aucune sauvegarde</div>';return;}
+  c.innerHTML=sv.map(function(s,i){return '<div style="display:flex;justify-content:space-between;padding:16px;background:var(--bg);border-radius:10px;margin-bottom:10px;cursor:pointer" onclick="loadChamp('+i+')"><div><b style="color:var(--p)">'+esc(s.name)+'</b><br><span style="font-size:.85rem;color:var(--tl)">'+new Date(s.date).toLocaleDateString('fr-FR')+'</span></div><button class="btn btn-danger btn-sm" onclick="event.stopPropagation();delChamp('+i+')">🗑️</button></div>';}).join('');
+}
+
+function loadChamp(i){
+  var sv=JSON.parse(localStorage.getItem('champ_jeunes')||'[]');if(!sv[i])return;
+  D=JSON.parse(JSON.stringify(sv[i].data));
+  if(!D.info)D.info={date:'',journee:1,categorie:'',clubRecevant:'',division:'',lieu:''};
+  if(!D.clubs)D.clubs=[];
+  D.teams.forEach(function(t){if(!t.double)t.double=[0,1];});
+  if(D.rankings&&D.rankings.length)showPage('podium');
+  else if(D.phase==='finals')showPage('finals');
+  else if(D.rencontres&&D.rencontres.length)showPage('semis');
+  else showPage('teams');
+}
+
+function delChamp(i){if(!confirm('Supprimer?'))return;var sv=JSON.parse(localStorage.getItem('champ_jeunes')||'[]');sv.splice(i,1);localStorage.setItem('champ_jeunes',JSON.stringify(sv));loadSaves();}
+function clearSaves(){if(!confirm('Tout supprimer?'))return;localStorage.removeItem('champ_jeunes');loadSaves();}
+
+function openAddPlayerModal(){
+  document.getElementById('add-licence').value='';
+  document.getElementById('add-nom').value='';
+  document.getElementById('add-prenom').value='';
+  document.getElementById('add-points').value='';
+  document.getElementById('add-categorie').value='';
+  document.getElementById('add-club-new').value='';
+  var clubSel=document.getElementById('add-club');
+  clubSel.innerHTML='<option value="">-- Sélectionner un club --</option>'+D.clubs.map(function(c){return '<option value="'+esc(c.num)+'|'+esc(c.nom)+'">'+esc(c.nom)+'</option>';}).join('');
+  document.getElementById('modal-add-player').classList.add('show');
+}
+
+function closeAddPlayerModal(){document.getElementById('modal-add-player').classList.remove('show');}
+
+function addPlayerManual(){
+  var lic=document.getElementById('add-licence').value.trim();
+  var nom=document.getElementById('add-nom').value.trim().toUpperCase();
+  var prenom=document.getElementById('add-prenom').value.trim();
+  var pts=document.getElementById('add-points').value.trim();
+  var cat=document.getElementById('add-categorie').value;
+  var clubVal=document.getElementById('add-club').value;
+  var clubNew=document.getElementById('add-club-new').value.trim();
+  
+  if(!nom||!prenom){alert('⚠️ Nom et prénom obligatoires');return;}
+  if(!cat){alert('⚠️ Catégorie obligatoire');return;}
+  
+  var numClub='',nomClub='';
+  if(clubNew){
+    numClub='NEW'+Date.now();
+    nomClub=clubNew;
+    var existing=D.clubs.find(function(c){return c.nom.toLowerCase()===clubNew.toLowerCase();});
+    if(!existing){
+      D.clubs.push({num:numClub,nom:nomClub,count:1});
+    }else{
+      numClub=existing.num;
+      nomClub=existing.nom;
+      existing.count++;
+    }
+  }else if(clubVal){
+    var parts=clubVal.split('|');
+    numClub=parts[0];
+    nomClub=parts[1]||'';
+    var cl=D.clubs.find(function(c){return c.num===numClub;});
+    if(cl)cl.count++;
+  }
+  
+  if(!lic)lic='MAN'+Date.now();
+  
+  var exists=D.joueurs.find(function(j){return j.licence===lic;});
+  if(exists){alert('⚠️ Un joueur avec cette licence existe déjà');return;}
+  
+  D.joueurs.push({
+    licence:lic,
+    nom:nom,
+    prenom:prenom,
+    points:pts,
+    numClub:numClub,
+    nomClub:nomClub,
+    categorie:cat
+  });
+  
+  renderImport();
+  closeAddPlayerModal();
+  alert('✅ Joueur '+nom+' '+prenom+' ajouté !');
+}
+
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
