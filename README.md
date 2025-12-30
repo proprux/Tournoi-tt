@@ -16,3 +16,4 @@ Championnat des jeunes
 * Plusieurs catégories
 * impression des fiches de partie.
 * sauvegarde des données en local
+* import de donnée massives pour créer les poules en fonctions des clubs
