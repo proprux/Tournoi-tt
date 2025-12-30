@@ -10,3 +10,9 @@ Fonctionnalites
 * Saisie des resultats
 * Sauvegarde des tournoi
 * Phase de poduium
+
+Championnat des jeunes
+======================
+* Plusieurs catégories
+* impression des fichies de partie.
+* sauvegarde des données en local
