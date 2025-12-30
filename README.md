@@ -14,5 +14,5 @@ Fonctionnalites
 Championnat des jeunes
 ======================
 * Plusieurs catégories
-* impression des fichies de partie.
+* impression des fiches de partie.
 * sauvegarde des données en local
